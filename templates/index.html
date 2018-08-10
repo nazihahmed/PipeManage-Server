@@ -15,8 +15,11 @@
 </html>
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
 <script type="text/javascript" charset="utf-8">
-    var socket = io.connect('http://' + document.domain + ':' + location.port);
+    var url = 'http://' + document.domain + ':' + location.port;
+    var socket = io.connect(url);
+    console.log("connect to socket",url)
     socket.on('connect', function() {
+        console.log("socket connected");
         socket.emit('my event', {data: 'I\'m connected!'});
     });
 </script>
