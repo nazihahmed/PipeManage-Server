@@ -38,3 +38,4 @@ hostname -I
 
 ## Reference
 ![Raspberry pi 3 B+ pinout](https://www.jameco.com/Jameco/workshop/circuitnotes/raspberry_pi_circuit_note_fig2a.jpg)
+![Liquid sensor pinout](https://www.dropbox.com/s/5jonztifm0d4fw8/Screenshot%202018-08-10%2023.40.11.png?dl=0)
