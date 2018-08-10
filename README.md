@@ -11,6 +11,7 @@
   - `python3 -m pip install -r requirements.txt`
 3. run the app
   - `python3 app.py`
+4. navigate to `http://127.0.0.1:5000/`
 
 ## How to add new packages
 - make sure to have a venv with all the packages from `requirements.txt`
