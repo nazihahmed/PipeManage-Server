@@ -10,7 +10,7 @@ def index():
     return render_template('index.html')
 
 @app.route('/main')
-def hello():
+def hello2():
    now = datetime.datetime.now()
    timeString = now.strftime("%Y-%m-%d %H:%M")
    templateData = {
