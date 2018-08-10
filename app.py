@@ -1,8 +1,11 @@
 from flask import Flask, render_template
 import datetime
 import RPi.GPIO as GPIO
+from flask_socketio import SocketIO
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'secret!'
+socketio = SocketIO(app)
 GPIO.setmode(GPIO.BCM)
 
 pins = {
@@ -17,6 +20,10 @@ for pin in pins:
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@socketio.on('message')
+def handle_message(message):
+    print('received message: ' + message)
 
 @app.route('/main')
 def hello2():
@@ -97,4 +104,4 @@ def action(changePin, action):
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+    socketio.run(app)
