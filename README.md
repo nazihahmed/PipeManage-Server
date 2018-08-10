@@ -30,3 +30,8 @@ pip install <package>
 pip freeze >> requirements.txt
 ```
 - checkout the changes with `git diff` and make sure that it's correct
+
+## Find out Raspberry pi IP address
+```
+hostname -I
+```
