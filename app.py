@@ -19,7 +19,7 @@ def hello2():
       }
    return render_template('main.html', **templateData)
 
-@app.route("/readPin/<pin>")
+@app.route("/pin/<pin>")
 def readPin(pin):
    try:
       GPIO.setup(int(pin), GPIO.IN)
