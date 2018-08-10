@@ -35,3 +35,6 @@ pip freeze >> requirements.txt
 ```
 hostname -I
 ```
+
+## Reference
+![Raspberry pi 3 B+ pinout](https://www.jameco.com/Jameco/workshop/circuitnotes/raspberry_pi_circuit_note_fig2a.jpg)
