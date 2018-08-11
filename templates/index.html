@@ -1,22 +1,16 @@
 <html>
   <head>
-    <link rel="stylesheet" href='/static/style.css' />
+    <link rel="stylesheet" href='../static/style.css' />
   </head>
   <body>
-    <div id="app">
-      {{ message }}
+    <div id="app-2">
+      <span v-bind:title="message">
+        Hover your mouse over me for a few seconds
+        to see my dynamically bound title!
+      </span>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <script src="/static/main.js"></script>
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
-    <script type="text/javascript" charset="utf-8">
-        var url = 'http://' + document.domain + ':' + location.port;
-        var socket = io.connect(url);
-        console.log("connect to socket",url)
-        socket.on('connect', function() {
-            console.log("socket connected");
-            socket.emit('my event', {data: 'I\'m connected!'});
-        });
-    </script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+    <script src="../static/main.js"></script>
   </body>
 </html>
