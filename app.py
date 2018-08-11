@@ -8,17 +8,43 @@ app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app)
 GPIO.setmode(GPIO.BCM)
 
-pins = {
-   17 : {'name' : 'coffee maker', 'state' : GPIO.LOW},
-   27 : {'name' : 'lamp', 'state' : GPIO.LOW}
-   }
 
-for pin in pins:
+# 6 sensors as input
+
+inputPins = {
+   15 : {'name' : 'sensor 1'},
+   17 : {'name' : 'sensor 2'},
+   18 : {'name' : 'sensor 3'},
+   27 : {'name' : 'sensor 4'},
+   23 : {'name' : 'sensor 5'},
+   22 : {'name' : 'sensor 6'},
+}
+
+# 6 relays as output
+
+outputPins = {
+   24 : {'name' : 'relay 1'},
+   10 : {'name' : 'relay 2'},
+   9  : {'name' : 'relay 3'},
+   25 : {'name' : 'relay 4'},
+   11 : {'name' : 'relay 5'},
+   8  : {'name' : 'relay 6'},
+}
+
+for pin in outputPins:
    GPIO.setup(pin, GPIO.OUT)
    GPIO.output(pin, GPIO.LOW)
 
+for pin in inputPins:
+   GPIO.setup(pin, GPIO.IN)
+
+def updateInputStatus():
+    for pin in inputPins:
+       inputPins[pin]['state'] = GPIO.input(pin)
+
 @app.route('/')
 def index():
+    
     return render_template('index.html')
 
 @socketio.on('message')
@@ -68,8 +94,7 @@ def hello(name):
 @app.route("/control")
 def control():
    # For each pin, read the pin state and store it in the pins dictionary:
-   for pin in pins:
-      pins[pin]['state'] = GPIO.input(pin)
+
    # Put the pin dictionary into the template data dictionary:
    templateData = {
       'pins' : pins
