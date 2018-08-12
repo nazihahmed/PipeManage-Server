@@ -1,0 +1,22 @@
+{
+  "name": "intel-pipemanage",
+  "version": "1.0.0",
+  "description": "## Requirements   - [Python 3.7.0](https://www.python.org/downloads/release/python-370/)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nazihahmed/intel-pipemanage.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nazihahmed/intel-pipemanage/issues"
+  },
+  "homepage": "https://github.com/nazihahmed/intel-pipemanage#readme",
+  "dependencies": {
+    "semantic-ui-vue": "^0.3.3"
+  }
+}
