@@ -6,7 +6,7 @@ import subprocess
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
-socketio = SocketIO(app)
+# socketio = SocketIO(app)
 GPIO.setmode(GPIO.BCM)
 
 
@@ -48,17 +48,17 @@ def index():
 
     return render_template('index.html')
 
-@socketio.on('message')
-def handle_message(message):
-    print('received message: ' + message)
-
-@socketio.on('json')
-def handle_json(json):
-    print('received json1: ' + str(json))
-
-@socketio.on('my event')
-def handle_my_custom_event(json):
-    print('received json: ' + str(json))
+# @socketio.on('message')
+# def handle_message(message):
+#     print('received message: ' + message)
+#
+# @socketio.on('json')
+# def handle_json(json):
+#     print('received json1: ' + str(json))
+#
+# @socketio.on('my event')
+# def handle_my_custom_event(json):
+#     print('received json: ' + str(json))
 
 @app.route('/main')
 def hello2():
@@ -143,4 +143,4 @@ def action(changePin, action):
 
 
 if __name__ == '__main__':
-    socketio.run(app=app,debug=True, host='0.0.0.0')
+    app.run(app=app,debug=True, host='0.0.0.0')
