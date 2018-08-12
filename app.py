@@ -2,6 +2,7 @@ from flask import Flask, render_template
 import datetime
 import RPi.GPIO as GPIO
 from flask_socketio import SocketIO
+import subprocess
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
@@ -44,7 +45,7 @@ def updateInputStatus():
 
 @app.route('/')
 def index():
-    
+
     return render_template('index.html')
 
 @socketio.on('message')
@@ -101,6 +102,11 @@ def control():
       }
    # Pass the template data into the template main.html and return it to the user
    return render_template('control.html', **templateData)
+
+@app.route("/update")
+def control():
+   subprocess.call("./update.sh")
+   return render_template('indel.html')
 
 # The function below is executed when someone requests a URL with the pin number and action in it:
 @app.route("/<changePin>/<action>")
