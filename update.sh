@@ -1,4 +1,5 @@
 #!/bin/bash
 sudo git pull
-sudo bash kill.sh
-sudo bash start.sh
+bash kill.sh
+bash start.sh
+bash restart.sh
