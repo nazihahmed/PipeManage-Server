@@ -104,7 +104,7 @@ def control():
    return render_template('control.html', **templateData)
 
 @app.route("/update")
-def control():
+def update():
    subprocess.call("./update.sh")
    return render_template('indel.html')
 
