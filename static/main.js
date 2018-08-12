@@ -11,3 +11,9 @@ socket.on('connect', function() {
     console.log("socket connected");
     socket.emit('my event', {data: 'I\'m connected!'});
 });
+
+$('input').on('focus',function() {
+  $('#keyboard').getkeyboard().reveal();
+}).on('blur',function() {
+  $('#keyboard').getkeyboard().close();
+});
