@@ -8,12 +8,12 @@
     "postinstall": "webpack --config webpack.prod.js",
     "log": "bash log.sh",
     "start": "bash start.sh",
-    "run": "bash kill.sh && python3 app.py | tee dev_app.log",
+    "app": "bash run.sh",
     "restart": "bash restart.sh",
     "update": "bash update.sh",
     "ps": "bash ps.sh",
     "kill": "bash kill.sh",
-    "dev": "concurrently --kill-others-on-fail --names 'BE,FE' --prefix-colors blue,green 'npm run start' 'webpack-dev-server --config webpack.dev.js'"
+    "dev": "concurrently --kill-others-on-fail --names 'BE,FE' --prefix-colors blue,green 'npm run start' 'webpack-dev-server --config webpack.dev.js  --open --inline --hot'"
   },
   "repository": {
     "type": "git",
@@ -26,7 +26,10 @@
   },
   "homepage": "https://github.com/nazihahmed/intel-pipemanage#readme",
   "dependencies": {
-    "semantic-ui-vue": "^0.3.3"
+    "jquery": "^3.3.1",
+    "semantic-ui-vue": "^0.3.3",
+    "socket.io-client": "^2.1.1",
+    "vue": "^2.5.17"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
@@ -34,11 +37,20 @@
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.7.0",
     "babel-preset-vue": "^2.0.2",
+    "clean-webpack-plugin": "^0.1.19",
     "concurrently": "^3.6.1",
+    "css-loader": "^1.0.0",
+    "expose-loader": "^0.7.5",
     "html-webpack-plugin": "^3.2.0",
+    "node-sass": "^4.9.3",
+    "sass-loader": "^7.1.0",
+    "style-loader": "^0.22.1",
+    "vue-loader": "^15.3.0",
+    "vue-template-compiler": "^2.5.17",
     "webpack": "^4.16.5",
     "webpack-cli": "^3.1.0",
     "webpack-dev-server": "^3.1.5",
+    "webpack-manifest-plugin": "^2.0.3",
     "webpack-merge": "^4.1.4"
   }
 }

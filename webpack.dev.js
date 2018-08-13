@@ -4,14 +4,16 @@ const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = merge(common, {
-  devtool: "eval",
+  // devtool: "eval",
   devServer: {
-    contentBase: "./static",
-    port: 5000
+    historyApiFallback: true,
+    noInfo: true
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: "./static/index.js"
-    })
-  ]
+      template: "./templates/index.html"
+    }),
+    new webpack.HotModuleReplacementPlugin()
+  ],
+  mode: 'development'
 });

@@ -24,5 +24,6 @@ module.exports = merge(common, {
     new webpack.DefinePlugin({
       DEV: false
     })
-  ]
+  ],
+  mode: 'production'
 });
