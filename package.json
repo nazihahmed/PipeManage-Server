@@ -1,8 +1,9 @@
 {
   "name": "intel-pipemanage",
   "version": "1.0.0",
-  "description": "## Requirements   - [Python 3.7.0](https://www.python.org/downloads/release/python-370/)",
-  "main": "index.js",
+  "description": "Intel Pipemanage",
+  "main": "app.py",
+  "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "log": "bash log.sh",
@@ -10,7 +11,9 @@
     "restart": "bash restart.sh",
     "update": "bash update.sh",
     "ps": "bash ps.sh",
-    "kill": "bash kill.sh"
+    "kill": "bash kill.sh",
+    "build:dev": "webpack --env dev --progress --profile --colors",
+    "build:prod": "webpack --env prod --progress --profile --colors",
   },
   "repository": {
     "type": "git",
@@ -24,5 +27,12 @@
   "homepage": "https://github.com/nazihahmed/intel-pipemanage#readme",
   "dependencies": {
     "semantic-ui-vue": "^0.3.3"
+  },
+  "devDependencies": {
+    "concurrently": "^3.6.1",
+    "html-webpack-plugin": "^3.2.0",
+    "webpack": "^4.16.5",
+    "webpack-cli": "^3.1.0",
+    "webpack-merge": "^4.1.4"
   }
 }
