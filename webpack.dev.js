@@ -6,25 +6,12 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 module.exports = merge(common, {
   devtool: "eval",
   devServer: {
-    contentBase: "./public",
-    port: 8444,
-    proxy: {
-      "/oauth": "http://localhost:8443",
-      "/rest": "http://localhost:8443",
-      "/mock": "http://localhost:8443",
-      "/socket.io": {
-        target: "ws://localhost:8443",
-        ws: true,
-        secure: false
-      }
-    }
+    contentBase: "./static",
+    port: 5000
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: "./public/index.ejs"
-    }),
-    new webpack.DefinePlugin({
-      DEV: true
+      template: "./static/index.js"
     })
   ]
 });
