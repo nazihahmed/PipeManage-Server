@@ -27,7 +27,7 @@ pip install <package>
 ```
 - freeze pip and save all the packages to `requirements.txt` using:
 ```bash
-pip freeze >> requirements.txt
+pip freeze > requirements.txt
 ```
 - checkout the changes with `git diff` and make sure that it's correct
 
