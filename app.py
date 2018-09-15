@@ -32,17 +32,17 @@ myShadowClient.configureConnectDisconnectTimeout(10)  # 10 sec
 myShadowClient.configureMQTTOperationTimeout(5)  # 5 sec
 
 def customCallback(data1,data2):
-    print("change")
+    print("get")
     print(data1,data2)
 
 myShadowClient.connect()
 # Create a device shadow instance using persistent subscription
 myDeviceShadow = myShadowClient.createShadowHandlerWithName("Bot", True)
 # Shadow operations
-# myDeviceShadow.shadowGet(customCallback, 5)
+myDeviceShadow.shadowGet(customCallback, 5)
 # myDeviceShadow.shadowUpdate(myJSONPayload, customCallback, 5)
 # myDeviceShadow.shadowDelete(customCallback, 5)
-myDeviceShadow.shadowRegisterDeltaCallback(customCallback)
+# myDeviceShadow.shadowRegisterDeltaCallback(customCallback)
 # myDeviceShadow.shadowUnregisterDeltaCallback()
 
 # configuration
