@@ -1,26 +1,49 @@
 from flask import Flask, render_template, jsonify, request
 import eventlet
 import datetime
-# import RPi.GPIO as GPIO
-from flask_socketio import SocketIO
-import subprocess
-from flask_cors import CORS
+import RPi.GPIO as GPIO
+# from flask_socketio import SocketIO
+# import subprocess
+# from flask_cors import CORS
+from AWSIoTPythonSDK.MQTTLib import AWSIoTMQTTShadowClient
 
+certs = {
+    keyPath: 'certs/deviceCert.key',
+    certPath: 'certs/deviceCert.crt',
+    caPath: 'certs/root.pem',
+    host: 'a2s7dpv6qj1qss.iot.us-west-2.amazonaws.com'
+};
+
+# For certificate based connection
+myShadowClient = AWSIoTMQTTShadowClient("myClientID")
+# For Websocket connection
+# myMQTTClient = AWSIoTMQTTClient("myClientID", useWebsocket=True)
+# Configurations
+# For TLS mutual authentication
+myShadowClient.configureEndpoint(certs.host, 8883)
+# For Websocket
+# myShadowClient.configureEndpoint("YOUR.ENDPOINT", 443)
+# For TLS mutual authentication with TLS ALPN extension
+# myShadowClient.configureEndpoint("YOUR.ENDPOINT", 443)
+myShadowClient.configureCredentials(certs.caPath, certs.keyPath, certs.certPath)
+# For Websocket, we only need to configure the root CA
+# myShadowClient.configureCredentials("YOUR/ROOT/CA/PATH")
+myShadowClient.configureConnectDisconnectTimeout(10)  # 10 sec
+myShadowClient.configureMQTTOperationTimeout(5)  # 5 sec
 
 # configuration
-DEBUG = True
+# DEBUG = True
 
 # instantiate the app
-app = Flask(__name__)
-app.config.from_object(__name__)
-app.config['SECRET_KEY'] = 'secret!'
-socketio = SocketIO(app)
+# app = Flask(__name__)
+# app.config.from_object(__name__)
+# app.config['SECRET_KEY'] = 'secret!'
+# socketio = SocketIO(app)
 
 # enable CORS
-CORS(app)
+# CORS(app)
 
 # GPIO.setmode(GPIO.BCM)
-
 
 # 6 sensors as input
 

@@ -1,0 +1,4 @@
+deviceCertAndCACert.crt
+deviceCert.*
+privateKeyVerification.*
+sampleCACertificate.srl
