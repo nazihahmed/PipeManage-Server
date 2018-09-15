@@ -17,13 +17,32 @@ certs = {
 };
 
 client = boto3.client(
-    'iot',
+    'dynamodb',
     aws_access_key_id='AKIAIMECMFPF5LJCOCSQ',
     aws_secret_access_key='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',
     region_name='us-west-2'
 )
 
-print("connect")
+response = client.get_item(
+    TableName='autoDeviceRegistration',
+    Key={
+        'string': {
+            'S': 'thingName'
+        }
+    },
+    # ReturnConsumedCapacity='INDEXES'|'TOTAL'|'NONE',
+    # ProjectionExpression='string',
+    # ExpressionAttributeNames={
+    #     'string': 'string'
+    # }
+)
+print("items")
+print(response)
+
+now = datetime.datetime.now()
+print("current timestamp",now)
+print("Current date and time using strftime:")
+print(now.strftime("%Y-%m-%d %H:%M"))
 
 # print(client.get_logging_options())
 
