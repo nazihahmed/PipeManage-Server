@@ -20,12 +20,12 @@ myShadowClient = AWSIoTMQTTShadowClient("myClientID")
 # myMQTTClient = AWSIoTMQTTClient("myClientID", useWebsocket=True)
 # Configurations
 # For TLS mutual authentication
-myShadowClient.configureEndpoint(certs.host, 8883)
+myShadowClient.configureEndpoint(certs['host'], 8883)
 # For Websocket
 # myShadowClient.configureEndpoint("YOUR.ENDPOINT", 443)
 # For TLS mutual authentication with TLS ALPN extension
 # myShadowClient.configureEndpoint("YOUR.ENDPOINT", 443)
-myShadowClient.configureCredentials(certs.caPath, certs.keyPath, certs.certPath)
+myShadowClient.configureCredentials(certs['caPath'], certs['keyPath'], certs['certPath'])
 # For Websocket, we only need to configure the root CA
 # myShadowClient.configureCredentials("YOUR/ROOT/CA/PATH")
 myShadowClient.configureConnectDisconnectTimeout(10)  # 10 sec
@@ -43,7 +43,7 @@ myShadowClient.configureMQTTOperationTimeout(5)  # 5 sec
 # enable CORS
 # CORS(app)
 
-# GPIO.setmode(GPIO.BCM)
+GPIO.setmode(GPIO.BCM)
 
 # 6 sensors as input
 
@@ -67,12 +67,12 @@ outputPins = {
    8  : {'name' : 'relay 6'},
 }
 
-# for pin in outputPins:
-#    GPIO.setup(pin, GPIO.OUT)
-#    GPIO.output(pin, GPIO.LOW)
+for pin in outputPins:
+   GPIO.setup(pin, GPIO.OUT)
+   GPIO.output(pin, GPIO.LOW)
 #
-# for pin in inputPins:
-#    GPIO.setup(pin, GPIO.IN)
+for pin in inputPins:
+   GPIO.setup(pin, GPIO.IN)
 #
 # def updateInputStatus():
 #     for pin in inputPins:
