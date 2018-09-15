@@ -1,5 +1,5 @@
 from flask import Flask, render_template, jsonify, request
-import eventlet
+# import eventlet
 import datetime
 import RPi.GPIO as GPIO
 # from flask_socketio import SocketIO
