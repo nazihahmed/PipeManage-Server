@@ -3,6 +3,7 @@ from flask import Flask, render_template, jsonify, request
 import datetime
 import RPi.GPIO as GPIO
 from beeprint import pp
+import boto3
 # from flask_socketio import SocketIO
 # import subprocess
 # from flask_cors import CORS
@@ -14,6 +15,16 @@ certs = {
     'caPath': 'certs/root.pem',
     'host': 'a2s7dpv6qj1qss.iot.us-west-2.amazonaws.com'
 };
+
+client = boto3.client(
+    'iot',
+    aws_access_key_id='AKIAIMECMFPF5LJCOCSQ',
+    aws_secret_access_key='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'
+)
+
+print("connect")
+
+print(client.get_logging_options())
 
 # For certificate based connection
 myShadowClient = AWSIoTMQTTShadowClient("myClientID")
