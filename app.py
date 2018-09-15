@@ -2,6 +2,7 @@ from flask import Flask, render_template, jsonify, request
 # import eventlet
 import datetime
 import RPi.GPIO as GPIO
+from beeprint import pp
 # from flask_socketio import SocketIO
 # import subprocess
 # from flask_cors import CORS
@@ -36,9 +37,8 @@ def customCallback(data1,data2,data3):
     print(data1,data2,data3)
 
 myShadowClient.connect()
+pp(myShadowClient,output=False)
 # Create a device shadow instance using persistent subscription
-for key,val in myShadowClient.items():
-    print(key, "=>", val)
 # myDeviceShadow = myShadowClient.createShadowHandlerWithName("Bot", True)
 # # Shadow operations
 # print("get Shadow")
