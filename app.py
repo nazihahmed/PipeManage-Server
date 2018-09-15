@@ -45,6 +45,7 @@ myShadowClient.configureMQTTOperationTimeout(5)  # 5 sec
 
 GPIO.setmode(GPIO.BCM)
 
+GPIO.cleanup()
 # 6 sensors as input
 
 inputPins = {
@@ -67,12 +68,12 @@ outputPins = {
    8  : {'name' : 'relay 6'},
 }
 
-for pin in outputPins:
-   GPIO.setup(pin, GPIO.OUT)
-   GPIO.output(pin, GPIO.LOW)
-#
-for pin in inputPins:
-   GPIO.setup(pin, GPIO.IN)
+# for pin in outputPins:
+#    GPIO.setup(pin, GPIO.OUT)
+#    GPIO.output(pin, GPIO.LOW)
+# #
+# for pin in inputPins:
+#    GPIO.setup(pin, GPIO.IN)
 #
 # def updateInputStatus():
 #     for pin in inputPins:
