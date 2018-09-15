@@ -20,7 +20,7 @@ client = boto3.client(
     'iot',
     aws_access_key_id='AKIAIMECMFPF5LJCOCSQ',
     aws_secret_access_key='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',
-    aws_default_region='us-west-2'
+    region='us-west-2'
 )
 
 print("connect")
