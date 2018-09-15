@@ -4,5 +4,7 @@ Jinja2==2.10
 MarkupSafe==1.0
 RPi.GPIO==0.6.3
 Werkzeug==0.14.1
+beeprint==2.4.7
 click==6.7
 itsdangerous==0.24
+urwid==2.0.1
