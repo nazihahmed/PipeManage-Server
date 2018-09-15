@@ -37,14 +37,15 @@ def customCallback(data1,data2,data3):
     print(data1,data2,data3)
 
 myShadowClient.connect()
-pp(myShadowClient,output=False)
+
+print("get Shadow")
+# pp(myShadowClient,output=False)
 # Create a device shadow instance using persistent subscription
-# myDeviceShadow = myShadowClient.createShadowHandlerWithName("Bot", True)
+myDeviceShadow = myShadowClient.createShadowHandlerWithName("ae117a21a7ad45a7babd3c2bcad3b4f22ec06e83f9bef89a39b0f4534e6d39b6", True)
 # # Shadow operations
-# print("get Shadow")
-# myDeviceShadow.shadowGet(customCallback, 5)
-# myMQTTClient = myShadowClient.getMQTTConnection()
-# myMQTTClient.subscribe("$aws/things/+/shadow/update", 1, customCallback)
+myDeviceShadow.shadowGet(customCallback, 5)
+myMQTTClient = myShadowClient.getMQTTConnection()
+myMQTTClient.subscribe("$aws/things/+/shadow/update", 1, customCallback)
 # myDeviceShadow.shadowUpdate(myJSONPayload, customCallback, 5)
 # myDeviceShadow.shadowDelete(customCallback, 5)
 # myDeviceShadow.shadowRegisterDeltaCallback(customCallback)
