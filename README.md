@@ -4,16 +4,11 @@
   - [Python 3.7.0](https://www.python.org/downloads/release/python-370/)
 
 ## How to run
-1. create a venv (virtual environment) and activate it
+1. run the init bash script
 ```bash
-python3 -m venv venv
-. venv/bin/activate
+bash init.sh
 ```
-2. install required packages
-```bash
-python3 -m pip install -r requirements.txt
-```
-3. run the app
+2. run the app
 ```bash
 python3 app.py
 ```
