@@ -41,6 +41,8 @@ myDeviceShadow = myShadowClient.createShadowHandlerWithName("Bot", True)
 # Shadow operations
 print("get Shadow")
 myDeviceShadow.shadowGet(customCallback, 5)
+myMQTTClient = myShadowClient.getMQTTConnection()
+myMQTTClient.subscribe("$aws/things/+/shadow/update", 1, customCallback)
 # myDeviceShadow.shadowUpdate(myJSONPayload, customCallback, 5)
 # myDeviceShadow.shadowDelete(customCallback, 5)
 # myDeviceShadow.shadowRegisterDeltaCallback(customCallback)
