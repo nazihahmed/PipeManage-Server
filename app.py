@@ -37,7 +37,7 @@ def customCallback(data1,data2,data3):
 
 myShadowClient.connect()
 # Create a device shadow instance using persistent subscription
-myDeviceShadow = myShadowClient.createShadowHandlerWithName("Bot", True)
+myDeviceShadow = myShadowClient.AWSIoTMQTTShadowClient("test", useWebsocket=True)
 # Shadow operations
 print("get Shadow")
 myDeviceShadow.shadowGet(customCallback, 5)
