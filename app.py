@@ -25,7 +25,7 @@ client = boto3.client(
 
 print("connect")
 
-print(client.get_logging_options())
+# print(client.get_logging_options())
 
 # For certificate based connection
 myShadowClient = AWSIoTMQTTShadowClient("myClientID")
