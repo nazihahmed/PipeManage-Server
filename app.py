@@ -8,10 +8,10 @@ import RPi.GPIO as GPIO
 from AWSIoTPythonSDK.MQTTLib import AWSIoTMQTTShadowClient
 
 certs = {
-    keyPath: 'certs/deviceCert.key',
-    certPath: 'certs/deviceCert.crt',
-    caPath: 'certs/root.pem',
-    host: 'a2s7dpv6qj1qss.iot.us-west-2.amazonaws.com'
+    'keyPath': 'certs/deviceCert.key',
+    'certPath': 'certs/deviceCert.crt',
+    'caPath': 'certs/root.pem',
+    'host': 'a2s7dpv6qj1qss.iot.us-west-2.amazonaws.com'
 };
 
 # For certificate based connection
@@ -78,17 +78,17 @@ outputPins = {
 #     for pin in inputPins:
 #        inputPins[pin]['state'] = GPIO.input(pin)
 #
-@socketio.on('message')
-def handle_message(message):
-    print('received message: ' + message)
-#
-@socketio.on('json')
-def handle_json(json):
-    print('received json1: ' + str(json))
-#
-@socketio.on('my event')
-def handle_my_custom_event(json):
-    print('received json: ' + str(json))
+# @socketio.on('message')
+# def handle_message(message):
+#     print('received message: ' + message)
+# #
+# @socketio.on('json')
+# def handle_json(json):
+#     print('received json1: ' + str(json))
+# #
+# @socketio.on('my event')
+# def handle_my_custom_event(json):
+#     print('received json: ' + str(json))
 #
 # @app.route('/main')
 # def hello2():
@@ -129,10 +129,10 @@ def handle_my_custom_event(json):
 #    # Pass the template data into the template main.html and return it to the user
 #    return render_template('control.html', **templateData)
 #
-@app.route("/update", methods=['POST'])
-def update():
-   subprocess.call("./update.sh")
-   return render_template('indel.html')
+# @app.route("/update", methods=['POST'])
+# def update():
+#    subprocess.call("./update.sh")
+#    return render_template('indel.html')
 #
 # # The function below is executed when someone requests a URL with the pin number and action in it:
 # @app.route("/<changePin>/<action>")
@@ -167,42 +167,42 @@ def update():
 #
 #    return render_template('control.html', **templateData)
 
-@app.route('/ping', methods=['GET'])
-def ping_pong():
-    return jsonify('pong!')
-
-BOOKS = [
-    {
-        'title': 'On the Road',
-        'author': 'Jack Kerouac',
-        'read': True
-    },
-    {
-        'title': 'Harry Potter and the Philosopher\'s Stone',
-        'author': 'J. K. Rowling',
-        'read': False
-    },
-    {
-        'title': 'Green Eggs and Ham',
-        'author': 'Dr. Seuss',
-        'read': True
-    }
-]
-
-@app.route('/books', methods=['GET', 'POST'])
-def all_books():
-    response_object = {'status': 'success'}
-    if request.method == 'POST':
-        post_data = request.get_json()
-        BOOKS.append({
-            'title': post_data.get('title'),
-            'author': post_data.get('author'),
-            'read': post_data.get('read')
-        })
-        response_object['message'] = 'Book added!'
-    else:
-        response_object['books'] = BOOKS
-    return jsonify(response_object)
-
-if __name__ == '__main__':
-    socketio.run(app)
+# @app.route('/ping', methods=['GET'])
+# def ping_pong():
+#     return jsonify('pong!')
+#
+# BOOKS = [
+#     {
+#         'title': 'On the Road',
+#         'author': 'Jack Kerouac',
+#         'read': True
+#     },
+#     {
+#         'title': 'Harry Potter and the Philosopher\'s Stone',
+#         'author': 'J. K. Rowling',
+#         'read': False
+#     },
+#     {
+#         'title': 'Green Eggs and Ham',
+#         'author': 'Dr. Seuss',
+#         'read': True
+#     }
+# ]
+#
+# @app.route('/books', methods=['GET', 'POST'])
+# def all_books():
+#     response_object = {'status': 'success'}
+#     if request.method == 'POST':
+#         post_data = request.get_json()
+#         BOOKS.append({
+#             'title': post_data.get('title'),
+#             'author': post_data.get('author'),
+#             'read': post_data.get('read')
+#         })
+#         response_object['message'] = 'Book added!'
+#     else:
+#         response_object['books'] = BOOKS
+#     return jsonify(response_object)
+#
+# if __name__ == '__main__':
+#     socketio.run(app)
