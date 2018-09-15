@@ -1,6 +1,7 @@
 from flask import Flask, render_template, jsonify, request
 # import eventlet
 import datetime
+import pprint
 import RPi.GPIO as GPIO
 # from flask_socketio import SocketIO
 # import subprocess
@@ -37,7 +38,7 @@ def customCallback(data1,data2,data3):
 
 myShadowClient.connect()
 # Create a device shadow instance using persistent subscription
-print(myShadowClient);
+pprint(myShadowClient);
 # myDeviceShadow = myShadowClient.createShadowHandlerWithName("Bot", True)
 # # Shadow operations
 # print("get Shadow")
