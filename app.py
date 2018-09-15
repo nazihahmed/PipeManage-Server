@@ -28,8 +28,8 @@ myShadowClient.configureEndpoint(certs['host'], 8883)
 myShadowClient.configureCredentials(certs['caPath'], certs['keyPath'], certs['certPath'])
 # For Websocket, we only need to configure the root CA
 # myShadowClient.configureCredentials("YOUR/ROOT/CA/PATH")
-myShadowClient.configureConnectDisconnectTimeout(10)  # 10 sec
-myShadowClient.configureMQTTOperationTimeout(5)  # 5 sec
+# myShadowClient.configureConnectDisconnectTimeout(10)  # 10 sec
+# myShadowClient.configureMQTTOperationTimeout(5)  # 5 sec
 
 def customCallback(data1,data2):
     print("get")
@@ -39,6 +39,7 @@ myShadowClient.connect()
 # Create a device shadow instance using persistent subscription
 myDeviceShadow = myShadowClient.createShadowHandlerWithName("Bot", True)
 # Shadow operations
+print("get Shadow")
 myDeviceShadow.shadowGet(customCallback, 5)
 # myDeviceShadow.shadowUpdate(myJSONPayload, customCallback, 5)
 # myDeviceShadow.shadowDelete(customCallback, 5)
