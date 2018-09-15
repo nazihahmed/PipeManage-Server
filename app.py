@@ -34,7 +34,7 @@ myShadowClient.configureCredentials(certs['caPath'], certs['keyPath'], certs['ce
 
 def customCallback(data1,data2,data3):
     print("get")
-    print(data1,data2,data3)
+    print(data1,'-------------',data2,'-------------',data3)
 
 myShadowClient.connect()
 
@@ -48,15 +48,15 @@ myMQTTClient = myShadowClient.getMQTTConnection()
 myMQTTClient.subscribe("$aws/things/+/shadow/update", 1, customCallback)
 # myDeviceShadow.shadowUpdate(myJSONPayload, customCallback, 5)
 # myDeviceShadow.shadowDelete(customCallback, 5)
-# myDeviceShadow.shadowRegisterDeltaCallback(customCallback)
+myDeviceShadow.shadowRegisterDeltaCallback(customCallback)
 # myDeviceShadow.shadowUnregisterDeltaCallback()
 
 # configuration
 # DEBUG = True
 
 # instantiate the app
-# app = Flask(__name__)
-# app.config.from_object(__name__)
+app = Flask(__name__)
+app.config.from_object(__name__)
 # app.config['SECRET_KEY'] = 'secret!'
 # socketio = SocketIO(app)
 
