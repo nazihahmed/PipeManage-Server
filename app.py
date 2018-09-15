@@ -23,13 +23,9 @@ client = boto3.client(
     region_name='us-west-2'
 )
 
-response = client.get_item(
+response = client.scan(
     TableName='autoDeviceRegistration',
-    # Key={
-    #     'string': {
-    #         'S': 'thingName'
-    #     }
-    # },
+    Limit=1
     # ReturnConsumedCapacity='INDEXES'|'TOTAL'|'NONE',
     # ProjectionExpression='string',
     # ExpressionAttributeNames={
