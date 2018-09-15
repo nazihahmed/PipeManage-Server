@@ -38,7 +38,7 @@ def customCallback(data1,data2,data3):
 myShadowClient.connect()
 # Create a device shadow instance using persistent subscription
 for key,val in myShadowClient.items():
-    print key, "=>", val
+    print(key, "=>", val)
 # myDeviceShadow = myShadowClient.createShadowHandlerWithName("Bot", True)
 # # Shadow operations
 # print("get Shadow")
