@@ -25,11 +25,11 @@ client = boto3.client(
 
 response = client.get_item(
     TableName='autoDeviceRegistration',
-    Key={
-        'string': {
-            'S': 'thingName'
-        }
-    },
+    # Key={
+    #     'string': {
+    #         'S': 'thingName'
+    #     }
+    # },
     # ReturnConsumedCapacity='INDEXES'|'TOTAL'|'NONE',
     # ProjectionExpression='string',
     # ExpressionAttributeNames={
