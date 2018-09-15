@@ -31,9 +31,9 @@ myShadowClient.configureCredentials(certs['caPath'], certs['keyPath'], certs['ce
 # myShadowClient.configureConnectDisconnectTimeout(10)  # 10 sec
 # myShadowClient.configureMQTTOperationTimeout(5)  # 5 sec
 
-def customCallback(data1):
+def customCallback(data1,data2,data3):
     print("get")
-    print(data1)
+    print(data1,data2,data3)
 
 myShadowClient.connect()
 # Create a device shadow instance using persistent subscription
