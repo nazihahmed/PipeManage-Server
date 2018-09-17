@@ -42,6 +42,7 @@ response = client.scan(
     },
     filterExpression='#t BETWEEN :now AND :later',
     TableName='autoDeviceRegistration',
+    ConsistentRead=True
 )
 print("items")
 # const thing = response['items'][0];
