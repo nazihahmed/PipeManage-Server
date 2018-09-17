@@ -40,9 +40,8 @@ response = client.scan(
     ExpressionAttributeNames={
         '#t': 'timestamp'
     },
-    filterExpression='#t BETWEEN :now AND :later',
-    TableName='autoDeviceRegistration',
-    ConsistentRead=True
+    FilterExpression='#t BETWEEN :now AND :later',
+    TableName='autoDeviceRegistration'
 )
 print("items")
 # const thing = response['items'][0];
