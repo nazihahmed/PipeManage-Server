@@ -23,7 +23,7 @@ client = boto3.client(
     region_name='us-west-2'
 )
 
-now = int(time.time()) # datetime.datetime.now()
+now = str(time.time())[0:14].replace('.','') # datetime.datetime.now()
 
 print("current timestamp",now)
 
@@ -80,10 +80,10 @@ app.config.from_object(__name__)
 response = client.scan(
     ExpressionAttributeValues={
         ':now': {
-            'N': str(now - 4*60),
+            'N': str(now - 10*60*1000),
         },
         ':later': {
-            'N': str(now + 4*60),
+            'N': str(now + 10*60*1000),
         }
     },
     ExpressionAttributeNames={
