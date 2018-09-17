@@ -23,7 +23,7 @@ client = boto3.client(
     region_name='us-west-2'
 )
 
-now = str(time.time())[0:14].replace('.','') # datetime.datetime.now()
+now = int(str(time.time())[0:14].replace('.','')) # datetime.datetime.now()
 
 print("current timestamp",now)
 
