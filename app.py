@@ -23,10 +23,10 @@ client = boto3.client(
     region_name='us-west-2'
 )
 
-response = client.scan(
-    TableName='autoDeviceRegistration',
-    KeyConditionExpression=
-)
+# response = client.scan(
+#     TableName='autoDeviceRegistration',
+#     KeyConditionExpression=
+# )
 now = int(time.time()) # datetime.datetime.now()
 response = client.query(
     ExpressionAttributeValues={
