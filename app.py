@@ -28,10 +28,10 @@ client = boto3.client(
 #     KeyConditionExpression=
 # )
 now = int(time.time()) # datetime.datetime.now()
-response = client.query(
+response = client.scan(
     ExpressionAttributeValues={
         ':now': {
-            'N': str(now),
+            'N': ,
         },
         ':later': {
             'N': str(now + 4*60),
@@ -40,7 +40,7 @@ response = client.query(
     ExpressionAttributeNames={
         '#t': 'timestamp'
     },
-    KeyConditionExpression='#t BETWEEN :now AND :later',
+    filterExpression='#t BETWEEN :now AND :later',
     TableName='autoDeviceRegistration',
 )
 print("items")
