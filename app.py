@@ -30,7 +30,7 @@ print("current timestamp",now)
 # print(client.get_logging_options())
 
 # For certificate based connection
-myShadowClient = AWSIoTMQTTShadowClient("myClientID")
+myShadowClient = AWSIoTMQTTShadowClient("testing123")
 # For Websocket connection
 # myMQTTClient = AWSIoTMQTTClient("myClientID", useWebsocket=True)
 # Configurations
@@ -80,7 +80,7 @@ app.config.from_object(__name__)
 response = client.scan(
     ExpressionAttributeValues={
         ':now': {
-            'N': str(now),
+            'N': str(now - 4*60),
         },
         ':later': {
             'N': str(now + 4*60),
