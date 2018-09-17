@@ -37,7 +37,10 @@ response = client.query(
             'N': str(now + 4*60),
         }
     },
-    KeyConditionExpression='timestamp BETWEEN :now AND :later',
+    ExpressionAttributeNames={
+        '#t': 'timestamp'
+    }
+    KeyConditionExpression='#t BETWEEN :now AND :later',
     TableName='autoDeviceRegistration',
 )
 print("items")
