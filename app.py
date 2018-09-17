@@ -31,10 +31,10 @@ now = int(time.time()) # datetime.datetime.now()
 response = client.query(
     ExpressionAttributeValues={
         ':now': {
-            'N': now,
+            'N': str(now),
         },
         ':later': {
-            'N': now + 4*60,
+            'N': str(now + 4*60),
         }
     },
     KeyConditionExpression='timestamp BETWEEN :now AND :later',
