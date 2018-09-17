@@ -31,7 +31,7 @@ now = int(time.time()) # datetime.datetime.now()
 response = client.scan(
     ExpressionAttributeValues={
         ':now': {
-            'N': ,
+            'N': str(now),
         },
         ':later': {
             'N': str(now + 4*60),
