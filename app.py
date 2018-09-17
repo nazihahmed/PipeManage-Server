@@ -25,17 +25,26 @@ client = boto3.client(
 
 response = client.scan(
     TableName='autoDeviceRegistration',
-    Limit=1
-    # ReturnConsumedCapacity='INDEXES'|'TOTAL'|'NONE',
-    # ProjectionExpression='string',
-    # ExpressionAttributeNames={
-    #     'string': 'string'
-    # }
+    KeyConditionExpression=
+)
+now = int(time.time()) # datetime.datetime.now()
+response = client.query(
+    ExpressionAttributeValues={
+        ':now': {
+            'N': now,
+        },
+        ':later': {
+            'N': now + 4*60,
+        }
+    },
+    KeyConditionExpression='timestamp BETWEEN :now AND :later',
+    TableName='autoDeviceRegistration',
 )
 print("items")
+# const thing = response['items'][0];
 print(response)
 
-now = datetime.datetime.now()
+
 print("current timestamp",now)
 print("Current date and time using strftime:")
 print(now.strftime("%Y-%m-%d %H:%M"))
