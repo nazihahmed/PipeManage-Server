@@ -23,34 +23,9 @@ client = boto3.client(
     region_name='us-west-2'
 )
 
-# response = client.scan(
-#     TableName='autoDeviceRegistration',
-#     KeyConditionExpression=
-# )
 now = int(time.time()) # datetime.datetime.now()
-response = client.scan(
-    ExpressionAttributeValues={
-        ':now': {
-            'N': str(now),
-        },
-        ':later': {
-            'N': str(now + 4*60),
-        }
-    },
-    ExpressionAttributeNames={
-        '#t': 'timestamp'
-    },
-    FilterExpression='#t BETWEEN :now AND :later',
-    TableName='autoDeviceRegistration'
-)
-print("items")
-# const thing = response['items'][0];
-print(response)
-
 
 print("current timestamp",now)
-print("Current date and time using strftime:")
-print(now.strftime("%Y-%m-%d %H:%M"))
 
 # print(client.get_logging_options())
 
@@ -101,6 +76,25 @@ app.config.from_object(__name__)
 
 # enable CORS
 # CORS(app)
+#
+response = client.scan(
+    ExpressionAttributeValues={
+        ':now': {
+            'N': str(now),
+        },
+        ':later': {
+            'N': str(now + 4*60),
+        }
+    },
+    ExpressionAttributeNames={
+        '#t': 'timestamp'
+    },
+    FilterExpression='#t BETWEEN :now AND :later',
+    TableName='autoDeviceRegistration'
+)
+print("items")
+# const thing = response['items'][0];
+print(response)
 
 GPIO.setmode(GPIO.BCM)
 
