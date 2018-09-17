@@ -39,7 +39,7 @@ response = client.query(
     },
     ExpressionAttributeNames={
         '#t': 'timestamp'
-    }
+    },
     KeyConditionExpression='#t BETWEEN :now AND :later',
     TableName='autoDeviceRegistration',
 )
