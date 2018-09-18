@@ -104,7 +104,14 @@ shadowGetToken = ''
 def customCallback(response,status,token):
     if status == 'rejected' and token == shadowGetToken:
         print('create the shadow')
-        online = {'reported':{'state':'online'}}
+        online = {
+            'state': {
+                    'reported':
+                        {
+                            'state':'online'
+                        }
+                    }
+        }
         myDeviceShadow.shadowUpdate(json.dumps(online), customCallback, 5)
     print("get")
     print(response,'-------------',status,'-------------',token)
