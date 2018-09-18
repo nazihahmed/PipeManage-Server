@@ -76,7 +76,7 @@ print("we have thingName")
 print(thingName)
 
 # For certificate based connection
-myShadowClient = AWSIoTMQTTShadowClient(thingName, useWebsocket=True)
+myShadowClient = AWSIoTMQTTShadowClient(thingName)
 # For Websocket connection
 # Configurations
 # For TLS mutual authentication
