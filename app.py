@@ -45,10 +45,6 @@ myShadowClient.configureCredentials(certs['caPath'], certs['keyPath'], certs['ce
 # myShadowClient.configureConnectDisconnectTimeout(10)  # 10 sec
 # myShadowClient.configureMQTTOperationTimeout(5)  # 5 sec
 
-def customCallback(data1,data2,data3):
-    print("get")
-    print(data1,'-------------',data2,'-------------',data3)
-
 try:
     myShadowClient.connect()
 except:
@@ -102,12 +98,21 @@ else:
 print("we have thingName")
 print(thingName)
 
+shadowGetToken = ''
+
+def customCallback(response,status,token):
+    if status == 'rejected' and token == shadowGetToken:
+        print('create the shadow')
+        myDeviceShadow.shadowUpdate({'reported':{'state':'online'}}, customCallback, 5)
+    print("get")
+    print(response,'-------------',status,'-------------',token)
+
 print("get Shadow")
 # pp(myShadowClient,output=False)
 # Create a device shadow instance using persistent subscription
 myDeviceShadow = myShadowClient.createShadowHandlerWithName(thingName, True)
 # # Shadow operations
-myDeviceShadow.shadowGet(customCallback, 5)
+shadowGetToken = myDeviceShadow.shadowGet(customCallback, 5)
 myMQTTClient = myShadowClient.getMQTTConnection()
 myMQTTClient.subscribe("$aws/things/+/shadow/update", 1, customCallback)
 # myDeviceShadow.shadowUpdate(myJSONPayload, customCallback, 5)
