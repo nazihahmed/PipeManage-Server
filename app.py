@@ -94,7 +94,7 @@ myShadowClient.connect()
 
 
 def customTopicCallback(client, userdata, message):
-    print("Received a new message: ")
+    print("Received a new message: ", flush=True)
     print(message.payload)
     print("from topic: ")
     print(message.topic)
