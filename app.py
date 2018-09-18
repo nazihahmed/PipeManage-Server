@@ -52,18 +52,18 @@ def customCallback(data1,data2,data3):
 
 myShadowClient.connect()
 
-print("get Shadow")
-# pp(myShadowClient,output=False)
-# Create a device shadow instance using persistent subscription
-myDeviceShadow = myShadowClient.createShadowHandlerWithName("ae117a21a7ad45a7babd3c2bcad3b4f22ec06e83f9bef89a39b0f4534e6d39b6", True)
-# # Shadow operations
-myDeviceShadow.shadowGet(customCallback, 5)
-myMQTTClient = myShadowClient.getMQTTConnection()
-myMQTTClient.subscribe("$aws/things/+/shadow/update", 1, customCallback)
-# myDeviceShadow.shadowUpdate(myJSONPayload, customCallback, 5)
-# myDeviceShadow.shadowDelete(customCallback, 5)
-myDeviceShadow.shadowRegisterDeltaCallback(customCallback)
-# myDeviceShadow.shadowUnregisterDeltaCallback()
+# print("get Shadow")
+# # pp(myShadowClient,output=False)
+# # Create a device shadow instance using persistent subscription
+# myDeviceShadow = myShadowClient.createShadowHandlerWithName("ae117a21a7ad45a7babd3c2bcad3b4f22ec06e83f9bef89a39b0f4534e6d39b6", True)
+# # # Shadow operations
+# myDeviceShadow.shadowGet(customCallback, 5)
+# myMQTTClient = myShadowClient.getMQTTConnection()
+# myMQTTClient.subscribe("$aws/things/+/shadow/update", 1, customCallback)
+# # myDeviceShadow.shadowUpdate(myJSONPayload, customCallback, 5)
+# # myDeviceShadow.shadowDelete(customCallback, 5)
+# myDeviceShadow.shadowRegisterDeltaCallback(customCallback)
+# # myDeviceShadow.shadowUnregisterDeltaCallback()
 
 # configuration
 # DEBUG = True
@@ -80,10 +80,10 @@ app.config.from_object(__name__)
 response = client.scan(
     ExpressionAttributeValues={
         ':now': {
-            'N': str(now - 2*60*1000),
+            'N': str(now - 5*60*1000),
         },
         ':later': {
-            'N': str(now + 2*60*1000),
+            'N': str(now + 5*60*1000),
         }
     },
     ExpressionAttributeNames={
