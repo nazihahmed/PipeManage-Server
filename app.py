@@ -93,7 +93,7 @@ response = client.scan(
     TableName='autoDeviceRegistration'
 )
 print("items")
-const thing = response['Items'][0];
+thing = response['Items'][0];
 print(thing['thingName'])
 
 
