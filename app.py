@@ -95,9 +95,9 @@ myShadowClient.connect()
 
 def customTopicCallback(client, userdata, message):
     print("Received a new message: ", flush=True)
-    print(message.payload)
+    print(message.payload, flush=True)
     print("from topic: ")
-    print(message.topic)
+    print(message.topic, flush=True)
     print("--------------\n\n")
 
 def deviceOnline():
@@ -112,7 +112,7 @@ def deviceOnline():
     myDeviceShadow.shadowUpdate(json.dumps(online), customCallback, 5)
 
 def customCallback(response,status,token):
-    print("got response", flush=True)
+    print("\ngot response", flush=True)
     print(response,'\n-------------\n',status,'\n-------------\n',token)
     print("--------------\n\n")
 
