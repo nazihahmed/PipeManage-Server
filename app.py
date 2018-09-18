@@ -83,12 +83,14 @@ myMQTTClient = AWSIoTMQTTClient(thingName, useWebsocket=True)
 # For TLS mutual authentication
 myShadowClient.configureEndpoint(certs['host'], 8883)
 myShadowClient.configureCredentials(certs['caPath'], certs['keyPath'], certs['certPath'])
-myAWSIoTMQTTClient.configureAutoReconnectBackoffTime(1, 32, 20)
+myMQTTClient.configureCredentials(certs['caPath'], certs['keyPath'], certs['certPath'])
+myMQTTClient.configureAutoReconnectBackoffTime(1, 32, 20)
 myShadowClient.configureConnectDisconnectTimeout(10)  # 10 sec
 myShadowClient.configureMQTTOperationTimeout(5)  # 5 sec
 
 # try:
 myShadowClient.connect()
+myMQTTClient.connect()
 # except:
 #     print("coldn't connect to shadow, trying again in 5 seconds")
 #     time.sleep(5)
