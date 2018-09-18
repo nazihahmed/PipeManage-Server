@@ -5,6 +5,7 @@ import RPi.GPIO as GPIO
 from beeprint import pp
 import boto3
 import os
+import json
 # from flask_socketio import SocketIO
 # import subprocess
 # from flask_cors import CORS
@@ -103,7 +104,8 @@ shadowGetToken = ''
 def customCallback(response,status,token):
     if status == 'rejected' and token == shadowGetToken:
         print('create the shadow')
-        myDeviceShadow.shadowUpdate({'reported':{'state':'online'}}, customCallback, 5)
+        online = {'reported':{'state':'online'}}
+        myDeviceShadow.shadowUpdate(json.dumps(online), customCallback, 5)
     print("get")
     print(response,'-------------',status,'-------------',token)
 
