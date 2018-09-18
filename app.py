@@ -28,8 +28,6 @@ now = int(str(time.time())[0:14].replace('.','')) # datetime.datetime.now()
 
 print("current timestamp",now)
 
-# print(client.get_logging_options())
-
 # For certificate based connection
 myShadowClient = AWSIoTMQTTShadowClient("testing123")
 # For Websocket connection
@@ -51,20 +49,12 @@ def customCallback(data1,data2,data3):
     print("get")
     print(data1,'-------------',data2,'-------------',data3)
 
-myShadowClient.connect()
-
-# print("get Shadow")
-# # pp(myShadowClient,output=False)
-# # Create a device shadow instance using persistent subscription
-# myDeviceShadow = myShadowClient.createShadowHandlerWithName("ae117a21a7ad45a7babd3c2bcad3b4f22ec06e83f9bef89a39b0f4534e6d39b6", True)
-# # # Shadow operations
-# myDeviceShadow.shadowGet(customCallback, 5)
-# myMQTTClient = myShadowClient.getMQTTConnection()
-# myMQTTClient.subscribe("$aws/things/+/shadow/update", 1, customCallback)
-# # myDeviceShadow.shadowUpdate(myJSONPayload, customCallback, 5)
-# # myDeviceShadow.shadowDelete(customCallback, 5)
-# myDeviceShadow.shadowRegisterDeltaCallback(customCallback)
-# # myDeviceShadow.shadowUnregisterDeltaCallback()
+try:
+    myShadowClient.connect()
+except:
+    print("coldn't connect to shadow, trying again in 5 seconds")
+    time.sleep(5)
+    myShadowClient.connect()
 
 # configuration
 # DEBUG = True
@@ -111,6 +101,19 @@ else:
 
 print("we have thingName")
 print(thingName)
+
+print("get Shadow")
+# pp(myShadowClient,output=False)
+# Create a device shadow instance using persistent subscription
+myDeviceShadow = myShadowClient.createShadowHandlerWithName(thingName, True)
+# # Shadow operations
+myDeviceShadow.shadowGet(customCallback, 5)
+myMQTTClient = myShadowClient.getMQTTConnection()
+myMQTTClient.subscribe("$aws/things/+/shadow/update", 1, customCallback)
+# myDeviceShadow.shadowUpdate(myJSONPayload, customCallback, 5)
+# myDeviceShadow.shadowDelete(customCallback, 5)
+myDeviceShadow.shadowRegisterDeltaCallback(customCallback)
+# myDeviceShadow.shadowUnregisterDeltaCallback()
 
 GPIO.setmode(GPIO.BCM)
 
