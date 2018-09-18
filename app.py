@@ -80,10 +80,10 @@ app.config.from_object(__name__)
 response = client.scan(
     ExpressionAttributeValues={
         ':now': {
-            'N': str(now - 5*60*1000),
+            'N': str(now - 10*60*1000),
         },
         ':later': {
-            'N': str(now + 5*60*1000),
+            'N': str(now + 10*60*1000),
         }
     },
     ExpressionAttributeNames={
@@ -92,9 +92,11 @@ response = client.scan(
     FilterExpression='#t BETWEEN :now AND :later',
     TableName='autoDeviceRegistration'
 )
-print("items")
+print("thingName is")
+# TODO: make sorting for items
 thing = response['Items'][0];
-print(thing['thingName'])
+print(response);
+print(thing['thingName']['S']);
 
 
 GPIO.setmode(GPIO.BCM)
