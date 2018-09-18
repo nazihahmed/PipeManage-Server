@@ -141,7 +141,7 @@ def exit_handler():
 
 atexit.register(exit_handler)
 
-GPIO.setmode(GPIO.BCM)
+# GPIO.setmode(GPIO.BCM)
 
 # GPIO.cleanup()
 # 6 sensors as input
@@ -306,5 +306,5 @@ outputPins = {
 # if __name__ == '__main__':
 #     socketio.run(app)
 # Loop forever
-# while True:
-#     time.sleep(1)
+while True:
+    time.sleep(1)
