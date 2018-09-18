@@ -4,6 +4,7 @@ import time
 import RPi.GPIO as GPIO
 from beeprint import pp
 import boto3
+import os
 # from flask_socketio import SocketIO
 # import subprocess
 # from flask_cors import CORS
@@ -69,36 +70,46 @@ myShadowClient.connect()
 # DEBUG = True
 
 # instantiate the app
-app = Flask(__name__)
-app.config.from_object(__name__)
+
 # app.config['SECRET_KEY'] = 'secret!'
 # socketio = SocketIO(app)
 
 # enable CORS
 # CORS(app)
 #
-response = client.scan(
-    ExpressionAttributeValues={
-        ':now': {
-            'N': str(now - 10*60*1000),
+
+thingFileName = 'certs/thingName.txt'
+thingFile = open(thingFileName, 'r+')
+thingName = ''
+if os.stat(thingFileName).st_size == 0:
+    response = client.scan(
+        ExpressionAttributeValues={
+            ':now': {
+                'N': str(now - 10*60*1000),
+            },
+            ':later': {
+                'N': str(now),
+            }
         },
-        ':later': {
-            'N': str(now),
-        }
-    },
-    ExpressionAttributeNames={
-        '#t': 'timestamp'
-    },
-    FilterExpression='#t BETWEEN :now AND :later',
-    TableName='autoDeviceRegistration'
-)
+        ExpressionAttributeNames={
+            '#t': 'timestamp'
+        },
+        FilterExpression='#t BETWEEN :now AND :later',
+        TableName='autoDeviceRegistration'
+    )
 
-sortedResponse = response['Items']
-sortedResponse.sort(key=lambda x:int(x['timestamp']['N']))
-# get latest item
-thing = sortedResponse[-1];
-print(thing['thingName']['S']);
+    sortedResponse = response['Items']
+    sortedResponse.sort(key=lambda x:int(x['timestamp']['N']))
+    # get latest item
+    thing = sortedResponse[-1];
+    thingName = thing['thingName']['S'];
+    thingFile.write(thingName)
+    thingFile.close()
+else:
+    thingName = thingFile.read()
 
+print("we have thingName")
+print(thingName)
 
 GPIO.setmode(GPIO.BCM)
 
