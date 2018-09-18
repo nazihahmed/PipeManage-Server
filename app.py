@@ -2,7 +2,6 @@ from flask import Flask, render_template, jsonify, request
 # import eventlet
 import time
 import RPi.GPIO as GPIO
-from beeprint import pp
 import boto3
 import os
 import json
@@ -29,30 +28,6 @@ client = boto3.client(
 now = int(str(time.time())[0:14].replace('.','')) # datetime.datetime.now()
 
 print("current timestamp",now)
-
-# For certificate based connection
-myShadowClient = AWSIoTMQTTShadowClient("testing123")
-# For Websocket connection
-# myMQTTClient = AWSIoTMQTTClient("myClientID", useWebsocket=True)
-# Configurations
-# For TLS mutual authentication
-myShadowClient.configureEndpoint(certs['host'], 8883)
-# For Websocket
-# myShadowClient.configureEndpoint("YOUR.ENDPOINT", 443)
-# For TLS mutual authentication with TLS ALPN extension
-# myShadowClient.configureEndpoint("YOUR.ENDPOINT", 443)
-myShadowClient.configureCredentials(certs['caPath'], certs['keyPath'], certs['certPath'])
-# For Websocket, we only need to configure the root CA
-# myShadowClient.configureCredentials("YOUR/ROOT/CA/PATH")
-# myShadowClient.configureConnectDisconnectTimeout(10)  # 10 sec
-# myShadowClient.configureMQTTOperationTimeout(5)  # 5 sec
-
-try:
-    myShadowClient.connect()
-except:
-    print("coldn't connect to shadow, trying again in 5 seconds")
-    time.sleep(5)
-    myShadowClient.connect()
 
 # configuration
 # DEBUG = True
@@ -100,7 +75,33 @@ else:
 print("we have thingName")
 print(thingName)
 
+# For certificate based connection
+myShadowClient = AWSIoTMQTTShadowClient(thingName)
+# For Websocket connection
+myMQTTClient = AWSIoTMQTTClient(thingName, useWebsocket=True)
+# Configurations
+# For TLS mutual authentication
+myShadowClient.configureEndpoint(certs['host'], 8883)
+myShadowClient.configureCredentials(certs['caPath'], certs['keyPath'], certs['certPath'])
+myAWSIoTMQTTClient.configureAutoReconnectBackoffTime(1, 32, 20)
+myShadowClient.configureConnectDisconnectTimeout(10)  # 10 sec
+myShadowClient.configureMQTTOperationTimeout(5)  # 5 sec
+
+# try:
+myShadowClient.connect()
+# except:
+#     print("coldn't connect to shadow, trying again in 5 seconds")
+#     time.sleep(5)
+#     myShadowClient.connect()
+
 shadowGetToken = ''
+
+def customTopicCallback(client, userdata, message):
+    print("Received a new message: ")
+    print(message.payload)
+    print("from topic: ")
+    print(message.topic)
+    print("--------------\n\n")
 
 def customCallback(response,status,token):
     if status == 'rejected' and token == shadowGetToken:
@@ -118,13 +119,12 @@ def customCallback(response,status,token):
     print(response,'-------------',status,'-------------',token)
 
 print("get Shadow")
-# pp(myShadowClient,output=False)
 # Create a device shadow instance using persistent subscription
 myDeviceShadow = myShadowClient.createShadowHandlerWithName(thingName, True)
 # # Shadow operations
 shadowGetToken = myDeviceShadow.shadowGet(customCallback, 5)
 myMQTTClient = myShadowClient.getMQTTConnection()
-myMQTTClient.subscribe("$aws/things/+/shadow/update", 1, customCallback)
+# myMQTTClient.subscribe("$aws/things/+/shadow/update", 1, customTopicCallback)
 # myDeviceShadow.shadowUpdate(myJSONPayload, customCallback, 5)
 # myDeviceShadow.shadowDelete(customCallback, 5)
 myDeviceShadow.shadowRegisterDeltaCallback(customCallback)
