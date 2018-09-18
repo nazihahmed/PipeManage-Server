@@ -78,7 +78,8 @@ myShadowClient.connect()
 # CORS(app)
 #
 
-thingFileName = 'certs/thingName.txt'
+script_dir = os.path.dirname(__file__)
+thingFileName = os.path.join(script_dir, 'certs/thingName.txt')
 thingFile = open(thingFileName, 'r+')
 thingName = ''
 if os.stat(thingFileName).st_size == 0:
