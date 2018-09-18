@@ -113,7 +113,8 @@ def deviceOnline():
 
 def customCallback(response,status,token):
     print("got response", flush=True)
-    print(response,'-------------',status,'-------------',token)
+    print(response,'\n-------------\n',status,'\n-------------\n',token)
+    print("--------------\n\n")
 
 # Create a device shadow instance using persistent subscription
 myDeviceShadow = myShadowClient.createShadowHandlerWithName(thingName, True)
