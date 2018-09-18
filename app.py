@@ -112,7 +112,7 @@ def deviceOnline():
     myDeviceShadow.shadowUpdate(json.dumps(online), customCallback, 5)
 
 def customCallback(response,status,token):
-    print("go response", flush=True)
+    print("got response", flush=True)
     print(response,'-------------',status,'-------------',token)
 
 # Create a device shadow instance using persistent subscription
@@ -120,7 +120,7 @@ myDeviceShadow = myShadowClient.createShadowHandlerWithName(thingName, True)
 deviceOnline()
 shadowGetToken = myDeviceShadow.shadowGet(customCallback, 5)
 myMQTTClient = myShadowClient.getMQTTConnection()
-# myMQTTClient.subscribe("$aws/things/+/shadow/update", 1, customTopicCallback)
+myMQTTClient.subscribe("$aws/things/+/shadow/update", 1, customTopicCallback)
 # myDeviceShadow.shadowUpdate(myJSONPayload, customCallback, 5)
 # myDeviceShadow.shadowDelete(customCallback, 5)
 myDeviceShadow.shadowRegisterDeltaCallback(customCallback)
