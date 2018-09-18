@@ -5,6 +5,7 @@ import RPi.GPIO as GPIO
 import boto3
 import os
 import json
+import logging
 import atexit
 # from flask_socketio import SocketIO
 # import subprocess
@@ -30,16 +31,14 @@ now = int(str(time.time())[0:14].replace('.','')) # datetime.datetime.now()
 print("current timestamp",now)
 
 # configuration
-# DEBUG = True
+DEBUG = True
 
-# instantiate the app
-
-# app.config['SECRET_KEY'] = 'secret!'
-# socketio = SocketIO(app)
-
-# enable CORS
-# CORS(app)
-#
+logger = logging.getLogger("AWSIoTPythonSDK.core")
+logger.setLevel(logging.DEBUG)
+streamHandler = logging.StreamHandler()
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+streamHandler.setFormatter(formatter)
+logger.addHandler(streamHandler)
 
 fileDir = os.path.dirname(os.path.realpath('__file__'))
 thingFileName = os.path.join(fileDir, 'certs/thingName.txt')
@@ -307,5 +306,5 @@ outputPins = {
 # if __name__ == '__main__':
 #     socketio.run(app)
 # Loop forever
-while True:
-    time.sleep(1)
+# while True:
+#     time.sleep(1)
