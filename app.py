@@ -9,7 +9,7 @@ import atexit
 # from flask_socketio import SocketIO
 # import subprocess
 # from flask_cors import CORS
-from AWSIoTPythonSDK.MQTTLib import *
+from AWSIoTPythonSDK.MQTTLib import AWSIoTMQTTShadowClient
 
 certs = {
     'keyPath': 'certs/deviceCert.key',
@@ -76,21 +76,18 @@ print("we have thingName")
 print(thingName)
 
 # For certificate based connection
-myShadowClient = AWSIoTMQTTShadowClient(thingName)
+myShadowClient = AWSIoTMQTTShadowClient(thingName, useWebsocket=True)
 # For Websocket connection
-myMQTTClient = AWSIoTMQTTClient(thingName, useWebsocket=True)
 # Configurations
 # For TLS mutual authentication
 myShadowClient.configureEndpoint(certs['host'], 8883)
 myShadowClient.configureCredentials(certs['caPath'], certs['keyPath'], certs['certPath'])
-myMQTTClient.configureCredentials(certs['caPath'], certs['keyPath'], certs['certPath'])
-myMQTTClient.configureAutoReconnectBackoffTime(1, 32, 20)
 myShadowClient.configureConnectDisconnectTimeout(10)  # 10 sec
+myShadowClient.configureAutoReconnectBackoffTime(1, 32, 20)
 myShadowClient.configureMQTTOperationTimeout(5)  # 5 sec
 
 # try:
 myShadowClient.connect()
-myMQTTClient.connect()
 # except:
 #     print("coldn't connect to shadow, trying again in 5 seconds")
 #     time.sleep(5)
@@ -309,3 +306,6 @@ outputPins = {
 #
 # if __name__ == '__main__':
 #     socketio.run(app)
+# Loop forever
+while True:
+    time.sleep(1)
