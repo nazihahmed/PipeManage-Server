@@ -9,7 +9,7 @@ import atexit
 # from flask_socketio import SocketIO
 # import subprocess
 # from flask_cors import CORS
-from AWSIoTPythonSDK.MQTTLib import AWSIoTMQTTShadowClient
+from AWSIoTPythonSDK.MQTTLib import *
 
 certs = {
     'keyPath': 'certs/deviceCert.key',
