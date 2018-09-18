@@ -120,10 +120,10 @@ myDeviceShadow = myShadowClient.createShadowHandlerWithName(thingName, True)
 deviceOnline()
 shadowGetToken = myDeviceShadow.shadowGet(customCallback, 5)
 myMQTTClient = myShadowClient.getMQTTConnection()
-myMQTTClient.subscribe("$aws/things/+/shadow/update", 1, customTopicCallback)
+myMQTTClient.subscribe("$aws/things/" + thingName + "/shadow/update", 1, customTopicCallback)
 # myDeviceShadow.shadowUpdate(myJSONPayload, customCallback, 5)
 # myDeviceShadow.shadowDelete(customCallback, 5)
-myDeviceShadow.shadowRegisterDeltaCallback(customCallback)
+# myDeviceShadow.shadowRegisterDeltaCallback(customCallback)
 # myDeviceShadow.shadowUnregisterDeltaCallback()
 
 def exit_handler():
