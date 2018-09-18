@@ -6,6 +6,7 @@ from beeprint import pp
 import boto3
 import os
 import json
+import atexit
 # from flask_socketio import SocketIO
 # import subprocess
 # from flask_cors import CORS
@@ -128,6 +129,19 @@ myMQTTClient.subscribe("$aws/things/+/shadow/update", 1, customCallback)
 # myDeviceShadow.shadowDelete(customCallback, 5)
 myDeviceShadow.shadowRegisterDeltaCallback(customCallback)
 # myDeviceShadow.shadowUnregisterDeltaCallback()
+
+def exit_handler():
+    online = {
+        'state': {
+                'reported':
+                    {
+                        'state':'offline'
+                    }
+                }
+    }
+    myDeviceShadow.shadowUpdate(json.dumps(online), customCallback, 5)
+
+atexit.register(exit_handler)
 
 GPIO.setmode(GPIO.BCM)
 
