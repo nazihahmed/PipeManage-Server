@@ -96,7 +96,7 @@ response = client.scan(
 sortedResponse = response['Items']
 sortedResponse.sort(key=lambda x:int(x['timestamp']['N']))
 # get latest item
-thing = sortedResponse['Items'][-1];
+thing = sortedResponse[-1];
 print(thing['thingName']['S']);
 
 
