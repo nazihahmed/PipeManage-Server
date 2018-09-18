@@ -92,7 +92,6 @@ myShadowClient.connect()
 #     time.sleep(5)
 #     myShadowClient.connect()
 
-shadowGetToken = ''
 
 def customTopicCallback(client, userdata, message):
     print("Received a new message: ")
@@ -101,25 +100,25 @@ def customTopicCallback(client, userdata, message):
     print(message.topic)
     print("--------------\n\n")
 
-def customCallback(response,status,token):
-    if status == 'rejected' and token == shadowGetToken:
-        print('create the shadow')
-        online = {
-            'state': {
-                    'reported':
-                        {
-                            'state':'online'
-                        }
+def deviceOnline():
+    online = {
+        'state': {
+                'reported':
+                    {
+                        'state':'online'
                     }
-        }
-        myDeviceShadow.shadowUpdate(json.dumps(online), customCallback, 5)
+                }
+    }
+    myDeviceShadow.shadowUpdate(json.dumps(online), customCallback, 5)
+
+def customCallback(response,status,token):
     print("get")
     print(response,'-------------',status,'-------------',token)
 
 print("get Shadow")
 # Create a device shadow instance using persistent subscription
 myDeviceShadow = myShadowClient.createShadowHandlerWithName(thingName, True)
-# # Shadow operations
+deviceOnline()
 shadowGetToken = myDeviceShadow.shadowGet(customCallback, 5)
 myMQTTClient = myShadowClient.getMQTTConnection()
 # myMQTTClient.subscribe("$aws/things/+/shadow/update", 1, customTopicCallback)
