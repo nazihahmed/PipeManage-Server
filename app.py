@@ -166,12 +166,12 @@ outputPins = {
 }
 
 for pin in outputPins:
-    print("setting up out pin",pin)
+    print("setting up out pin",pin, flush=True)
     GPIO.setup(pin, GPIO.OUT)
     GPIO.output(pin, GPIO.LOW)
 
 for pin in inputPins:
-    print("setting up in pin",pin)
+    print("setting up in pin",pin, flush=True)
     GPIO.setup(pin, GPIO.IN)
 
 def updateInputStatus():
