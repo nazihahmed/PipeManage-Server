@@ -108,10 +108,6 @@ def updateReportedState(reported):
     }
     myDeviceShadow.shadowUpdate(json.dumps(state), customCallback, 5)
 
-def deviceOnline():
-    online = { 'state':'online' }
-    updateReportedState(online)
-
 def customCallback(response,status,token):
     print("\ngot response", flush=True)
     print(response,'\n-------------\n',status,'\n-------------\n',token, flush=True)
@@ -119,7 +115,6 @@ def customCallback(response,status,token):
 
 # Create a device shadow instance using persistent subscription
 myDeviceShadow = myShadowClient.createShadowHandlerWithName(thingName, True)
-deviceOnline()
 shadowGetToken = myDeviceShadow.shadowGet(customCallback, 5)
 myMQTTClient = myShadowClient.getMQTTConnection()
 myMQTTClient.subscribe("$aws/things/" + thingName + "/shadow/update", 1, customTopicCallback)
@@ -129,8 +124,6 @@ myMQTTClient.subscribe("$aws/things/" + thingName + "/shadow/update", 1, customT
 # myDeviceShadow.shadowUnregisterDeltaCallback()
 
 def exit_handler():
-    reported = { 'state':'offline' }
-    updateReportedState(reported)
     GPIO.cleanup()
 
 atexit.register(exit_handler)
