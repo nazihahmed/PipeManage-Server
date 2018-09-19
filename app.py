@@ -100,16 +100,17 @@ def customTopicCallback(client, userdata, message):
     print(message.topic, flush=True)
     print("--------------\n\n", flush=True)
 
-def deviceOnline():
-    online = {
+def updateReportedState(reported):
+    state = {
         'state': {
-                'reported':
-                    {
-                        'state':'online'
-                    }
+                'reported':reported
                 }
     }
-    myDeviceShadow.shadowUpdate(json.dumps(online), customCallback, 5)
+    myDeviceShadow.shadowUpdate(json.dumps(state), customCallback, 5)
+
+def deviceOnline():
+    online = { 'state':'online' }
+    updateReportedState(online)
 
 def customCallback(response,status,token):
     print("\ngot response", flush=True)
@@ -128,15 +129,8 @@ myMQTTClient.subscribe("$aws/things/" + thingName + "/shadow/update", 1, customT
 # myDeviceShadow.shadowUnregisterDeltaCallback()
 
 def exit_handler():
-    online = {
-        'state': {
-                'reported':
-                    {
-                        'state':'offline'
-                    }
-                }
-    }
-    myDeviceShadow.shadowUpdate(json.dumps(online), customCallback, 5)
+    reported = { 'state':'offline' }
+    updateReportedState(reported)
     GPIO.cleanup()
 
 atexit.register(exit_handler)
@@ -175,9 +169,12 @@ for pin in inputPins:
     GPIO.setup(pin, GPIO.IN)
 
 def updateInputStatus():
+    print("updating input statuses")
     for pin in inputPins:
         inputPins[pin]['state'] = GPIO.input(pin)
-#
+    updateReportedState(inputPins)
+
+updateInputStatus()
 # @socketio.on('message')
 # def handle_message(message):
 #     print('received message: ' + message)
@@ -309,3 +306,4 @@ def updateInputStatus():
 # Loop forever
 while True:
     time.sleep(1)
+    updateInputStatus()
