@@ -28,7 +28,7 @@ client = boto3.client(
 
 now = int(str(time.time())[0:14].replace('.','')) # datetime.datetime.now()
 
-print("current timestamp",now)
+print("current timestamp",now, flush=True)
 
 # configuration
 DEBUG = True
@@ -71,8 +71,8 @@ if os.stat(thingFileName).st_size == 0:
 else:
     thingName = thingFile.read()
 
-print("we have thingName")
-print(thingName)
+print("we have thingName", flush=True)
+print(thingName, flush=True)
 
 # For certificate based connection
 myShadowClient = AWSIoTMQTTShadowClient(thingName)
@@ -96,9 +96,9 @@ myShadowClient.connect()
 def customTopicCallback(client, userdata, message):
     print("Received a new message: ", flush=True)
     print(message.payload, flush=True)
-    print("from topic: ")
+    print("from topic: ", flush=True)
     print(message.topic, flush=True)
-    print("--------------\n\n")
+    print("--------------\n\n", flush=True)
 
 def deviceOnline():
     online = {
@@ -113,8 +113,8 @@ def deviceOnline():
 
 def customCallback(response,status,token):
     print("\ngot response", flush=True)
-    print(response,'\n-------------\n',status,'\n-------------\n',token)
-    print("--------------\n\n")
+    print(response,'\n-------------\n',status,'\n-------------\n',token, flush=True)
+    print("--------------\n\n", flush=True)
 
 # Create a device shadow instance using persistent subscription
 myDeviceShadow = myShadowClient.createShadowHandlerWithName(thingName, True)
@@ -140,9 +140,8 @@ def exit_handler():
 
 atexit.register(exit_handler)
 
-# GPIO.setmode(GPIO.BCM)
+GPIO.setmode(GPIO.BCM)
 
-# GPIO.cleanup()
 # 6 sensors as input
 
 inputPins = {
@@ -165,16 +164,16 @@ outputPins = {
    8  : {'name' : 'relay 6'},
 }
 
-# for pin in outputPins:
-#    GPIO.setup(pin, GPIO.OUT)
-#    GPIO.output(pin, GPIO.LOW)
-# #
-# for pin in inputPins:
-#    GPIO.setup(pin, GPIO.IN)
-#
-# def updateInputStatus():
-#     for pin in inputPins:
-#        inputPins[pin]['state'] = GPIO.input(pin)
+for pin in outputPins:
+   GPIO.setup(pin, GPIO.OUT)
+   GPIO.output(pin, GPIO.LOW)
+
+for pin in inputPins:
+   GPIO.setup(pin, GPIO.IN)
+
+def updateInputStatus():
+    for pin in inputPins:
+       inputPins[pin]['state'] = GPIO.input(pin)
 #
 # @socketio.on('message')
 # def handle_message(message):
