@@ -137,6 +137,7 @@ def exit_handler():
                 }
     }
     myDeviceShadow.shadowUpdate(json.dumps(online), customCallback, 5)
+    GPIO.cleanup()
 
 atexit.register(exit_handler)
 
