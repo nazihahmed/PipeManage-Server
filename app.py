@@ -165,15 +165,17 @@ outputPins = {
 }
 
 for pin in outputPins:
-   GPIO.setup(pin, GPIO.OUT)
-   GPIO.output(pin, GPIO.LOW)
+    print("setting up out pin",pin)
+    GPIO.setup(pin, GPIO.OUT)
+    GPIO.output(pin, GPIO.LOW)
 
 for pin in inputPins:
-   GPIO.setup(pin, GPIO.IN)
+    print("setting up in pin",pin)
+    GPIO.setup(pin, GPIO.IN)
 
 def updateInputStatus():
     for pin in inputPins:
-       inputPins[pin]['state'] = GPIO.input(pin)
+        inputPins[pin]['state'] = GPIO.input(pin)
 #
 # @socketio.on('message')
 # def handle_message(message):
