@@ -162,6 +162,7 @@ for pin in inputPins:
     GPIO.setup(pin, GPIO.IN)
 
 oldInputStatus = inputPins
+
 def updateInputStatus():
     print("updating input statuses")
     oldInputStatus = inputPins
@@ -170,7 +171,11 @@ def updateInputStatus():
     # if oldInputStatus != inputPins:
     updateReportedState(inputPins)
 
-updateInputStatus()
+def initPins():
+    updateInputStatus()
+    updateReportedState(outputPins)
+
+initPins()
 # @socketio.on('message')
 # def handle_message(message):
 #     print('received message: ' + message)
