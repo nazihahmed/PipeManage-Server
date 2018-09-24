@@ -133,7 +133,7 @@ GPIO.setmode(GPIO.BCM)
 # 6 sensors as input
 
 inputPins = {
-   4 : {'name' : 'sensor 1'},
+   4  : {'name' : 'sensor 1'},
    17 : {'name' : 'sensor 2'},
    18 : {'name' : 'sensor 3'},
    27 : {'name' : 'sensor 4'},
@@ -144,12 +144,12 @@ inputPins = {
 # 6 relays as output
 
 outputPins = {
-   24 : {'name' : 'relay 1'},
-   10 : {'name' : 'relay 2'},
-   9  : {'name' : 'relay 3'},
-   25 : {'name' : 'relay 4'},
-   11 : {'name' : 'relay 5'},
-   8  : {'name' : 'relay 6'},
+   16 : {'name' : 'relay 1'},
+   12 : {'name' : 'relay 2'},
+   19 : {'name' : 'relay 3'},
+   13 : {'name' : 'relay 4'},
+   6  : {'name' : 'relay 5'},
+   5  : {'name' : 'relay 6'},
 }
 
 for pin in outputPins:
