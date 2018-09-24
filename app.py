@@ -2,8 +2,11 @@ from flask import Flask, render_template, jsonify, request
 # import eventlet
 import time
 import RPi.GPIO as GPIO
-from beeprint import pp
 import boto3
+import os
+import json
+import logging
+import atexit
 # from flask_socketio import SocketIO
 # import subprocess
 # from flask_cors import CORS
@@ -25,80 +28,108 @@ client = boto3.client(
 
 now = int(str(time.time())[0:14].replace('.','')) # datetime.datetime.now()
 
-print("current timestamp",now)
+print("current timestamp",now, flush=True)
 
-# print(client.get_logging_options())
+# configuration
+DEBUG = True
+
+# logger = logging.getLogger("AWSIoTPythonSDK.core")
+# logger.setLevel(logging.DEBUG)
+# streamHandler = logging.StreamHandler()
+# formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+# streamHandler.setFormatter(formatter)
+# logger.addHandler(streamHandler)
+
+fileDir = os.path.dirname(os.path.realpath('__file__'))
+thingFileName = os.path.join(fileDir, 'certs/thingName.txt')
+thingFile = open(thingFileName, 'r+')
+thingName = ''
+if os.stat(thingFileName).st_size == 0:
+    response = client.scan(
+        ExpressionAttributeValues={
+            ':now': {
+                'N': str(now - 10*60*1000),
+            },
+            ':later': {
+                'N': str(now),
+            }
+        },
+        ExpressionAttributeNames={
+            '#t': 'timestamp'
+        },
+        FilterExpression='#t BETWEEN :now AND :later',
+        TableName='autoDeviceRegistration'
+    )
+
+    sortedResponse = response['Items']
+    sortedResponse.sort(key=lambda x:int(x['timestamp']['N']))
+    # get latest item
+    thing = sortedResponse[-1];
+    thingName = thing['thingName']['S'];
+    thingFile.write(thingName)
+    thingFile.close()
+else:
+    thingName = thingFile.read()
+
+print("we have thingName", flush=True)
+print(thingName, flush=True)
 
 # For certificate based connection
-myShadowClient = AWSIoTMQTTShadowClient("testing123")
+myShadowClient = AWSIoTMQTTShadowClient(thingName)
 # For Websocket connection
-# myMQTTClient = AWSIoTMQTTClient("myClientID", useWebsocket=True)
 # Configurations
 # For TLS mutual authentication
 myShadowClient.configureEndpoint(certs['host'], 8883)
-# For Websocket
-# myShadowClient.configureEndpoint("YOUR.ENDPOINT", 443)
-# For TLS mutual authentication with TLS ALPN extension
-# myShadowClient.configureEndpoint("YOUR.ENDPOINT", 443)
 myShadowClient.configureCredentials(certs['caPath'], certs['keyPath'], certs['certPath'])
-# For Websocket, we only need to configure the root CA
-# myShadowClient.configureCredentials("YOUR/ROOT/CA/PATH")
-# myShadowClient.configureConnectDisconnectTimeout(10)  # 10 sec
-# myShadowClient.configureMQTTOperationTimeout(5)  # 5 sec
+myShadowClient.configureConnectDisconnectTimeout(10)  # 10 sec
+myShadowClient.configureAutoReconnectBackoffTime(1, 32, 20)
+myShadowClient.configureMQTTOperationTimeout(5)  # 5 sec
 
-def customCallback(data1,data2,data3):
-    print("get")
-    print(data1,'-------------',data2,'-------------',data3)
-
+# try:
 myShadowClient.connect()
+# except:
+#     print("coldn't connect to shadow, trying again in 5 seconds")
+#     time.sleep(5)
+#     myShadowClient.connect()
 
-print("get Shadow")
-# pp(myShadowClient,output=False)
+
+def customTopicCallback(client, userdata, message):
+    print("Received a new message: ", flush=True)
+    print(message.payload, flush=True)
+    print("from topic: ", flush=True)
+    print(message.topic, flush=True)
+    print("--------------\n\n", flush=True)
+
+def updateReportedState(reported):
+    state = {
+        'state': {
+                'reported':reported
+                }
+    }
+    myDeviceShadow.shadowUpdate(json.dumps(state), customCallback, 5)
+
+def customCallback(response,status,token):
+    print("\ngot response", flush=True)
+    print(response,'\n-------------\n',status,'\n-------------\n',token, flush=True)
+    print("--------------\n\n", flush=True)
+
 # Create a device shadow instance using persistent subscription
-myDeviceShadow = myShadowClient.createShadowHandlerWithName("ae117a21a7ad45a7babd3c2bcad3b4f22ec06e83f9bef89a39b0f4534e6d39b6", True)
-# # Shadow operations
-myDeviceShadow.shadowGet(customCallback, 5)
+myDeviceShadow = myShadowClient.createShadowHandlerWithName(thingName, True)
+shadowGetToken = myDeviceShadow.shadowGet(customCallback, 5)
 myMQTTClient = myShadowClient.getMQTTConnection()
-myMQTTClient.subscribe("$aws/things/+/shadow/update", 1, customCallback)
+myMQTTClient.subscribe("$aws/things/" + thingName + "/shadow/update", 1, customTopicCallback)
 # myDeviceShadow.shadowUpdate(myJSONPayload, customCallback, 5)
 # myDeviceShadow.shadowDelete(customCallback, 5)
-myDeviceShadow.shadowRegisterDeltaCallback(customCallback)
+# myDeviceShadow.shadowRegisterDeltaCallback(customCallback)
 # myDeviceShadow.shadowUnregisterDeltaCallback()
 
-# configuration
-# DEBUG = True
+def exit_handler():
+    GPIO.cleanup()
 
-# instantiate the app
-app = Flask(__name__)
-app.config.from_object(__name__)
-# app.config['SECRET_KEY'] = 'secret!'
-# socketio = SocketIO(app)
-
-# enable CORS
-# CORS(app)
-#
-response = client.scan(
-    ExpressionAttributeValues={
-        ':now': {
-            'N': str(now - 2*60*1000),
-        },
-        ':later': {
-            'N': str(now + 2*60*1000),
-        }
-    },
-    ExpressionAttributeNames={
-        '#t': 'timestamp'
-    },
-    FilterExpression='#t BETWEEN :now AND :later',
-    TableName='autoDeviceRegistration'
-)
-print("items")
-# const thing = response['items'][0];
-print(response)
+atexit.register(exit_handler)
 
 GPIO.setmode(GPIO.BCM)
 
-# GPIO.cleanup()
 # 6 sensors as input
 
 inputPins = {
@@ -121,17 +152,30 @@ outputPins = {
    8  : {'name' : 'relay 6'},
 }
 
-# for pin in outputPins:
-#    GPIO.setup(pin, GPIO.OUT)
-#    GPIO.output(pin, GPIO.LOW)
-# #
-# for pin in inputPins:
-#    GPIO.setup(pin, GPIO.IN)
-#
-# def updateInputStatus():
-#     for pin in inputPins:
-#        inputPins[pin]['state'] = GPIO.input(pin)
-#
+for pin in outputPins:
+    print("setting up out pin",pin, flush=True)
+    GPIO.setup(pin, GPIO.OUT)
+    GPIO.output(pin, GPIO.LOW)
+
+for pin in inputPins:
+    print("setting up in pin",pin, flush=True)
+    GPIO.setup(pin, GPIO.IN)
+
+oldInputStatus = inputPins
+
+def updateInputStatus():
+    print("updating input statuses")
+    oldInputStatus = inputPins
+    for pin in inputPins:
+        inputPins[pin]['state'] = GPIO.input(pin)
+    # if oldInputStatus != inputPins:
+    updateReportedState(inputPins)
+
+def initPins():
+    updateInputStatus()
+    updateReportedState(outputPins)
+
+initPins()
 # @socketio.on('message')
 # def handle_message(message):
 #     print('received message: ' + message)
@@ -260,3 +304,7 @@ outputPins = {
 #
 # if __name__ == '__main__':
 #     socketio.run(app)
+# Loop forever
+while True:
+    time.sleep(1)
+    updateInputStatus()
