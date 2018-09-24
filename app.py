@@ -96,9 +96,21 @@ myShadowClient.connect()
 def customTopicCallback(client, userdata, message):
     print("Received a new message: ", flush=True)
     print(message.payload, flush=True)
+    data = json.load(message.payload)
+    if data["state"] and data["state"]["desired"]:
+        print("received desired state", flush=True)
+        updateOutputsStatus(data["state"]["desired"])
     print("from topic: ", flush=True)
     print(message.topic, flush=True)
     print("--------------\n\n", flush=True)
+
+def updateDesiredState(desired):
+    state = {
+        'state': {
+                'desired':desired
+                }
+    }
+    myDeviceShadow.shadowUpdate(json.dumps(state), customCallback, 5)
 
 def updateReportedState(reported):
     state = {
@@ -164,12 +176,28 @@ for pin in inputPins:
 oldInputStatus = inputPins
 
 def updateInputStatus():
-    print("updating input statuses")
+    print("updating pin states")
     oldInputStatus = inputPins
     for pin in inputPins:
         inputPins[pin]['state'] = GPIO.input(pin)
+    for pin in outputPins:
+        outputPins[pin]['state'] = GPIO.input(pin)
     # if oldInputStatus != inputPins:
     updateReportedState(inputPins)
+    updateReportedState(outputPins)
+
+def updateOutputsStatus(outputs):
+    for output in outputs:
+        if outputPins[output] and outputs[output]['state'] === '0':
+            GPIO.output(output, GPIO.HIGH)
+            cleanDesired = {}
+            cleanDesired[output] = None
+            updateDesiredState(cleanDesired)
+        if outputPins[output] and outputs[output]['state'] === '1':
+            GPIO.output(output, GPIO.LOW)
+            cleanDesired = {}
+            cleanDesired[output] = None
+            updateDesiredState(cleanDesired)
 
 def initPins():
     updateInputStatus()
