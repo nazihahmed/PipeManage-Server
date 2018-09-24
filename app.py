@@ -102,7 +102,7 @@ GPIO.setmode(GPIO.BCM)
 # 6 sensors as input
 
 inputPins = {
-   15 : {'name' : 'sensor 1'},
+   4 : {'name' : 'sensor 1'},
    17 : {'name' : 'sensor 2'},
    18 : {'name' : 'sensor 3'},
    27 : {'name' : 'sensor 4'},
