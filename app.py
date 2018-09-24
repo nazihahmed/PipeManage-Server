@@ -182,8 +182,8 @@ def updateInputStatus():
         inputPins[pin]['state'] = GPIO.input(pin)
     for out in outputPins:
         outputPins[out]['state'] = GPIO.input(out)
-    # if oldInputStatus != inputPins:
-    updateReportedState({**inputPins, **outputPins})
+    updated = {**inputPins, **outputPins}
+    updateReportedState(updated)
 
 def updateOutputsStatus(outputs):
     for output in outputs:
