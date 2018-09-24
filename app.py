@@ -159,7 +159,7 @@ for pin in outputPins:
 
 for pin in inputPins:
     print("setting up in pin",pin, flush=True)
-    GPIO.setup(pin, GPIO.IN)
+    GPIO.setup(pin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
 oldInputStatus = inputPins
 
