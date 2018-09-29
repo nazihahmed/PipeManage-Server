@@ -332,9 +332,12 @@ initPins()
 # if __name__ == '__main__':
 #     socketio.run(app)
 # Loop forever
-try:
-    while True:
+#
+while True:
+    try:
         time.sleep(1)
         updateInputStatus()
-except KeyboardInterrupt:
-    print("exiting")
+    except KeyboardInterrupt:
+        raise
+    except:
+        print("exiting")
