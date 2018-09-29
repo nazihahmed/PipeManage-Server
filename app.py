@@ -98,7 +98,7 @@ def customTopicCallback(client, userdata, message):
     # print(message.payload, flush=True)
     data = json.loads(message.payload)
     if "state" in data and "reported" in data["state"]:
-        print("received reported state", flush=True)
+        print("received reported state", data["state"], flush=True)
     if "state" in data and "desired" in data["state"]:
         print("received desired state", data["state"]["desired"], flush=True)
         # updateOutputsStatus(data["state"]["desired"])
