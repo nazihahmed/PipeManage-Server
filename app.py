@@ -341,6 +341,6 @@ while True:
         time.sleep(1)
         updateInputStatus()
     except KeyboardInterrupt:
-        pass
+        raise
     except:
         print("exiting")
