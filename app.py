@@ -96,7 +96,7 @@ myShadowClient.connect()
 def customTopicCallback(client, userdata, message):
     print("Received a new message: ", flush=True)
     print(message.payload, flush=True)
-    data = json.load(message.payload)
+    data = json.loads(message.payload)
     if data["state"] and data["state"]["desired"]:
         print("received desired state", flush=True)
         updateOutputsStatus(data["state"]["desired"])
