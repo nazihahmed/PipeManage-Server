@@ -121,7 +121,7 @@ def updateReportedState(reported):
     myDeviceShadow.shadowUpdate(json.dumps(state), customCallback, 5)
 
 def customCallback(response,status,token):
-    # print("\ngot response", flush=True)
+    print("\ngot response", flush=True)
     # print("""response,'\n-------------\n',"""status,'\n-------------\n',token, flush=True)
     # print("--------------\n\n", flush=True)
 
