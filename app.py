@@ -95,7 +95,7 @@ myShadowClient.connect()
 
 def customTopicCallback(client, userdata, message):
     print("Received a new message: ", flush=True)
-    print(message.payload, flush=True)
+    # print(message.payload, flush=True)
     data = json.loads(message.payload)
     if "state" in data and "desired" in data["state"]:
         print("received desired state", data["state"]["desired"], flush=True)
@@ -122,7 +122,7 @@ def updateReportedState(reported):
 
 def customCallback(response,status,token):
     print("\ngot response", flush=True)
-    print(response,'\n-------------\n',status,'\n-------------\n',token, flush=True)
+    print("""response,'\n-------------\n',"""status,'\n-------------\n',token, flush=True)
     print("--------------\n\n", flush=True)
 
 # Create a device shadow instance using persistent subscription
