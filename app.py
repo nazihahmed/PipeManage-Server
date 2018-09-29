@@ -98,7 +98,7 @@ def customTopicCallback(client, userdata, message):
     # print(message.payload, flush=True)
     data = json.loads(message.payload)
     if "state" in data and "reported" in data["state"]:
-        print("received reported state", data["state"], flush=True)
+        # print("received reported state", data["state"], flush=True)
     if "state" in data and "desired" in data["state"]:
         print("received desired state", data["state"]["desired"], flush=True)
         # updateOutputsStatus(data["state"]["desired"])
@@ -132,7 +132,7 @@ def customCallback(response,status,token):
 myDeviceShadow = myShadowClient.createShadowHandlerWithName(thingName, True)
 shadowGetToken = myDeviceShadow.shadowGet(customCallback, 5)
 myMQTTClient = myShadowClient.getMQTTConnection()
-myMQTTClient.subscribe("$aws/things/" + thingName + "/shadow/update", 1, customTopicCallback)
+myMQTTClient.subscribe("$aws/things/" + thingName + "/shadow/update/delta", 1, customTopicCallback)
 # myDeviceShadow.shadowUpdate(myJSONPayload, customCallback, 5)
 # myDeviceShadow.shadowDelete(customCallback, 5)
 # myDeviceShadow.shadowRegisterDeltaCallback(customCallback)
