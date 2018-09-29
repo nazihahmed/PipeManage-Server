@@ -176,7 +176,6 @@ for pin in inputPins:
 oldInputStatus = inputPins
 
 def updateInputStatus():
-    print("updating pin states")
     oldInputStatus = inputPins
     for pin in inputPins:
         inputPins[pin]['state'] = GPIO.input(pin)
@@ -187,16 +186,17 @@ def updateInputStatus():
 
 def updateOutputsStatus(outputs):
     for output in outputs:
-        if outputPins[output] and outputs[output]['state'] == '0':
-            GPIO.output(output, GPIO.HIGH)
-            cleanDesired = {}
-            cleanDesired[output] = None
-            updateDesiredState(cleanDesired)
-        if outputPins[output] and outputs[output]['state'] == '1':
-            GPIO.output(output, GPIO.LOW)
-            cleanDesired = {}
-            cleanDesired[output] = None
-            updateDesiredState(cleanDesired)
+        if output in outputPins:
+            if outputs[output]['state'] == '0':
+                GPIO.output(output, GPIO.HIGH)
+                cleanDesired = {}
+                cleanDesired[output] = None
+                updateDesiredState(cleanDesired)
+            elif outputs[output]['state'] == '1':
+                GPIO.output(output, GPIO.LOW)
+                cleanDesired = {}
+                cleanDesired[output] = None
+                updateDesiredState(cleanDesired)
 
 def initPins():
     updateInputStatus()
