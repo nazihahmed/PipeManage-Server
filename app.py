@@ -189,14 +189,14 @@ def updateOutputsStatus(outputs):
         if output in outputPins:
             if outputs[output]['state'] == '0':
                 GPIO.output(output, GPIO.HIGH)
-                cleanDesired = {}
-                cleanDesired[output] = None
-                updateDesiredState(cleanDesired)
+                # cleanDesired = {}
+                # cleanDesired[output] = None
+                # updateDesiredState(cleanDesired)
             elif outputs[output]['state'] == '1':
                 GPIO.output(output, GPIO.LOW)
-                cleanDesired = {}
-                cleanDesired[output] = None
-                updateDesiredState(cleanDesired)
+                # cleanDesired = {}
+                # cleanDesired[output] = None
+                # updateDesiredState(cleanDesired)
 
 def initPins():
     updateInputStatus()
