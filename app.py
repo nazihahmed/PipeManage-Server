@@ -189,14 +189,15 @@ def updateOutputsStatus(outputs):
     for outputStr in outputs:
         output = int(outputStr)
         if output in outputPins:
-            print("updating pin", output)
             if outputs[outputStr]['state'] == '0':
-                GPIO.output(output, GPIO.HIGH)
+                print("PIN", output, "LOW")
+                GPIO.output(output, GPIO.LOW)
                 # cleanDesired = {}
                 # cleanDesired[output] = None
                 # updateDesiredState(cleanDesired)
             elif outputs[outputStr]['state'] == '1':
-                GPIO.output(output, GPIO.LOW)
+                print("PIN", output, "HIGH")
+                GPIO.output(output, GPIO.HIGH)
                 # cleanDesired = {}
                 # cleanDesired[output] = None
                 # updateDesiredState(cleanDesired)
