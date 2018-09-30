@@ -189,6 +189,7 @@ def updateOutputsStatus(outputs):
     for outputStr in outputs:
         output = int(outputStr)
         if output in outputPins:
+            print("check state",outputs[outputStr]['state'], type(outputs[outputStr]['state']))
             if outputs[outputStr]['state'] == '0':
                 print("PIN", output, "LOW")
                 GPIO.output(output, GPIO.LOW)
