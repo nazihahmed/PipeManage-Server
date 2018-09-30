@@ -185,8 +185,10 @@ def updateInputStatus():
     updateReportedState(updated)
 
 def updateOutputsStatus(outputs):
+    print("updating outputs")
     for output in outputs:
         if output in outputPins:
+            print("updating pin", output)
             if outputs[output]['state'] == '0':
                 GPIO.output(output, GPIO.HIGH)
                 # cleanDesired = {}
