@@ -339,7 +339,7 @@ initPins()
 #
 while True:
     try:
-        time.sleep(1)
+        time.sleep(5)
         updateInputStatus()
     except KeyboardInterrupt:
         raise
