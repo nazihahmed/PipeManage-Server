@@ -7,9 +7,6 @@ import os
 import json
 import logging
 import atexit
-# from flask_socketio import SocketIO
-# import subprocess
-# from flask_cors import CORS
 from AWSIoTPythonSDK.MQTTLib import AWSIoTMQTTShadowClient
 
 certs = {
@@ -74,11 +71,10 @@ else:
 print("we have thingName", flush=True)
 print(thingName, flush=True)
 
-# For certificate based connection
+
 myShadowClient = AWSIoTMQTTShadowClient(thingName)
-# For Websocket connection
+
 # Configurations
-# For TLS mutual authentication
 myShadowClient.configureEndpoint(certs['host'], 8883)
 myShadowClient.configureCredentials(certs['caPath'], certs['keyPath'], certs['certPath'])
 myShadowClient.configureConnectDisconnectTimeout(10)  # 10 sec
@@ -156,12 +152,12 @@ inputPins = {
 # 6 relays as output
 
 outputPins = {
-   16 : {'name' : 'relay 1'},
-   12 : {'name' : 'relay 2'},
-   19 : {'name' : 'relay 3'},
-   13 : {'name' : 'relay 4'},
-   6  : {'name' : 'relay 5'},
-   5  : {'name' : 'relay 6'},
+   16 : {'name' : 'relay 1', 'auto': 0},
+   12 : {'name' : 'relay 2', 'auto': 0},
+   19 : {'name' : 'relay 3', 'auto': 0},
+   13 : {'name' : 'relay 4', 'auto': 0},
+   6  : {'name' : 'relay 5', 'auto': 0},
+   5  : {'name' : 'relay 6', 'auto': 0},
 }
 
 for pin in outputPins:
@@ -173,174 +169,73 @@ for pin in inputPins:
     print("setting up in pin",pin, flush=True)
     GPIO.setup(pin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
-oldInputStatus = inputPins
+def getInputPin(outputPin):
+    inputPin = None
+    for input, state in inputPins.tems():
+        if state['name'][-1:] == outputPins[outputPin]['name'][-1:]:
+            inputPin = input
+            break
+    return inputPin
 
-def updateInputStatus():
-    oldInputStatus = inputPins
+def updateIOStatus():
     for pin in inputPins:
         inputPins[pin]['state'] = GPIO.input(pin)
     for out in outputPins:
         outputPins[out]['state'] = GPIO.input(out)
+
+def updateReportedIO():
     updated = {**inputPins, **outputPins}
     updateReportedState(updated)
+
+def toggleAutomaticOutput(output, status):
+    updateIOStatus()
+    if status == True:
+        outputPins[output]['auto'] = 1
+    else:
+        outputPins[output]['auto'] = 0
 
 def updateOutputsStatus(outputs):
     print("updating outputs")
     for outputStr in outputs:
         output = int(outputStr)
         if output in outputPins:
-            if outputs[outputStr]['state'] == 0:
-                print("PIN", output, "LOW")
-                GPIO.output(output, GPIO.LOW)
-                cleanDesired = {}
-                cleanDesired[output] = None
-                updateDesiredState(cleanDesired)
-            elif outputs[outputStr]['state'] == 1:
-                print("PIN", output, "HIGH")
-                GPIO.output(output, GPIO.HIGH)
-                cleanDesired = {}
-                cleanDesired[output] = None
-                updateDesiredState(cleanDesired)
+            if outputs[outputStr]['auto'] == 0:
+                print("PIN", output, "AUTO OFF")
+                toggleAutomaticOutput(output, False)
+                # GPIO.output(output, GPIO.LOW)
+            elif outputs[outputStr]['auto'] == 1:
+                print("PIN", output, "AUTO ON")
+                toggleAutomaticOutput(output, True)
+                # GPIO.output(output, GPIO.HIGH)
+            if outputPins[output]['auto'] !== 1:
+                if outputs[outputStr]['state'] == 0:
+                    print("PIN", output, "LOW")
+                    GPIO.output(output, GPIO.LOW)
+                elif outputs[outputStr]['state'] == 1:
+                    print("PIN", output, "HIGH")
+                    GPIO.output(output, GPIO.HIGH)
+            cleanDesired = {}
+            cleanDesired[output] = None
+            updateDesiredState(cleanDesired)
+    updateReportedIO()
 
 def initPins():
-    updateInputStatus()
+    updateReportedIO()
     updateReportedState(outputPins)
 
 initPins()
-# @socketio.on('message')
-# def handle_message(message):
-#     print('received message: ' + message)
-# #
-# @socketio.on('json')
-# def handle_json(json):
-#     print('received json1: ' + str(json))
-# #
-# @socketio.on('my event')
-# def handle_my_custom_event(json):
-#     print('received json: ' + str(json))
-#
-# @app.route('/main')
-# def hello2():
-#    now = datetime.datetime.now()
-#    timeString = now.strftime("%Y-%m-%d %H:%M")
-#    templateData = {
-#       'title' : 'HELLO!',
-#       'time': timeString
-#       }
-#    return render_template('main.html', **templateData)
-#
-# @app.route("/pin/<pin>")
-# def readPin(pin):
-#    try:
-#       GPIO.setup(int(pin), GPIO.IN)
-#       if GPIO.input(int(pin)) == True:
-#          response = "Pin number " + pin + " is high!"
-#       else:
-#          response = "Pin number " + pin + " is low!"
-#    except:
-#       response = "There was an error reading pin " + pin + "."
-#
-#    templateData = {
-#       'title' : 'Status of Pin' + pin,
-#       'response' : response
-#       }
-#
-#    return render_template('pin.html', **templateData)
-#
-# @app.route("/control")
-# def control():
-#    # For each pin, read the pin state and store it in the pins dictionary:
-#
-#    # Put the pin dictionary into the template data dictionary:
-#    templateData = {
-#       'pins' : pins
-#       }
-#    # Pass the template data into the template main.html and return it to the user
-#    return render_template('control.html', **templateData)
-#
-# @app.route("/update", methods=['POST'])
-# def update():
-#    subprocess.call("./update.sh")
-#    return render_template('indel.html')
-#
-# # The function below is executed when someone requests a URL with the pin number and action in it:
-# @app.route("/<changePin>/<action>")
-# def action(changePin, action):
-#    # Convert the pin from the URL into an integer:
-#    changePin = int(changePin)
-#    # Get the device name for the pin being changed:
-#    deviceName = pins[changePin]['name']
-#    # If the action part of the URL is "on," execute the code indented below:
-#    if action == "on":
-#       # Set the pin high:
-#       GPIO.output(changePin, GPIO.HIGH)
-#       # Save the status message to be passed into the template:
-#       message = "Turned " + deviceName + " on."
-#    if action == "off":
-#       GPIO.output(changePin, GPIO.LOW)
-#       message = "Turned " + deviceName + " off."
-#    if action == "toggle":
-#       # Read the pin and set it to whatever it isn't (that is, toggle it):
-#       GPIO.output(changePin, not GPIO.input(changePin))
-#       message = "Toggled " + deviceName + "."
-#
-#    # For each pin, read the pin state and store it in the pins dictionary:
-#    for pin in pins:
-#       pins[pin]['state'] = GPIO.input(pin)
-#
-#    # Along with the pin dictionary, put the message into the template data dictionary:
-#    templateData = {
-#       'message' : message,
-#       'pins' : pins
-#    }
-#
-#    return render_template('control.html', **templateData)
 
-# @app.route('/ping', methods=['GET'])
-# def ping_pong():
-#     return jsonify('pong!')
-#
-# BOOKS = [
-#     {
-#         'title': 'On the Road',
-#         'author': 'Jack Kerouac',
-#         'read': True
-#     },
-#     {
-#         'title': 'Harry Potter and the Philosopher\'s Stone',
-#         'author': 'J. K. Rowling',
-#         'read': False
-#     },
-#     {
-#         'title': 'Green Eggs and Ham',
-#         'author': 'Dr. Seuss',
-#         'read': True
-#     }
-# ]
-#
-# @app.route('/books', methods=['GET', 'POST'])
-# def all_books():
-#     response_object = {'status': 'success'}
-#     if request.method == 'POST':
-#         post_data = request.get_json()
-#         BOOKS.append({
-#             'title': post_data.get('title'),
-#             'author': post_data.get('author'),
-#             'read': post_data.get('read')
-#         })
-#         response_object['message'] = 'Book added!'
-#     else:
-#         response_object['books'] = BOOKS
-#     return jsonify(response_object)
-#
-# if __name__ == '__main__':
-#     socketio.run(app)
-# Loop forever
-#
 while True:
+    updateIOStatus()
+    for pin, state in outputPins.items():
+        if state['auto'] == 1:
+            inputPin = inputPins[getInputPin(pin)]
+            if inputPin['state'] == 0 and state['state'] == 0:
+                GPIO.output(pin, GPIO.HIGH)
+            elif inputPin['state'] == 1:
+                GPIO.output(pin, GPIO.LOW)
     try:
-        time.sleep(5)
-        updateInputStatus()
+        time.sleep(1)
     except KeyboardInterrupt:
         raise
     except:
