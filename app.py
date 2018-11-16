@@ -219,12 +219,12 @@ def updateOutputsStatus(outputs):
             cleanDesired = {}
             cleanDesired[output] = None
             updateDesiredState(cleanDesired)
-    updateReportedIO()
     updateIOStatus()
+    updateReportedIO()
 
 def initPins():
+    updateIOStatus()
     updateReportedIO()
-    updateReportedState(outputPins)
 
 initPins()
 
