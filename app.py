@@ -163,7 +163,7 @@ outputPins = {
 for pin in outputPins:
     print("setting up out pin",pin, flush=True)
     GPIO.setup(pin, GPIO.OUT)
-    GPIO.output(pin, GPIO.LOW)
+    GPIO.output(pin, GPIO.HIGH)
 
 for pin in inputPins:
     print("setting up in pin",pin, flush=True)
@@ -181,7 +181,7 @@ def updateIOStatus():
     for pin in inputPins:
         inputPins[pin]['state'] = GPIO.input(pin)
     for out in outputPins:
-        outputPins[out]['state'] = GPIO.input(out)
+        outputPins[out]['state'] = 1 if GPIO.input(out) == 0 else 0
 
 def updateReportedIO():
     updated = {**inputPins, **outputPins}
@@ -198,7 +198,8 @@ def updateOutputsStatus(outputs):
     print("updating outputs")
     for outputStr in outputs:
         output = int(outputStr)
-        if output in outputPins:
+        print("check output",outputs[outputStr], flush=True)
+        if output in outputPins and outputs[outputStr]:
             if outputs[outputStr]['auto'] == 0:
                 print("PIN", output, "AUTO OFF")
                 toggleAutomaticOutput(output, False)
