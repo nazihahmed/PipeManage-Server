@@ -230,13 +230,14 @@ def initPins():
 initPins()
 
 while True:
+    updateIOStatus()
     for pin, state in outputPins.items():
         if state['auto'] == 1:
             inputPin = inputPins[getInputPin(pin)]
             if inputPin['state'] == 0 and state['state'] == 0:
-                GPIO.output(pin, GPIO.HIGH)
-            elif inputPin['state'] == 1:
                 GPIO.output(pin, GPIO.LOW)
+            elif inputPin['state'] == 1:
+                GPIO.output(pin, GPIO.HIGH)
     try:
         time.sleep(1)
     except KeyboardInterrupt:
