@@ -207,7 +207,7 @@ def updateOutputsStatus(outputs):
                 print("PIN", output, "AUTO ON")
                 toggleAutomaticOutput(output, True)
                 # GPIO.output(output, GPIO.HIGH)
-            if outputPins[output]['auto'] !== 1:
+            if outputPins[output]['auto'] != 1:
                 if outputs[outputStr]['state'] == 0:
                     print("PIN", output, "LOW")
                     GPIO.output(output, GPIO.LOW)
