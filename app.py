@@ -210,12 +210,13 @@ def updateOutputsStatus(outputs):
                     toggleAutomaticOutput(output, True)
                     # GPIO.output(output, GPIO.HIGH)
             if outputPins[output]['auto'] != 1:
-                if outputs[outputStr]['state'] == 0:
-                    print("PIN", output, "LOW")
-                    GPIO.output(output, GPIO.HIGH)
-                elif outputs[outputStr]['state'] == 1:
-                    print("PIN", output, "HIGH")
-                    GPIO.output(output, GPIO.LOW)
+                if 'state' in outputs[outputStr]:
+                    if outputs[outputStr]['state'] == 0:
+                        print("PIN", output, "LOW")
+                        GPIO.output(output, GPIO.HIGH)
+                    elif outputs[outputStr]['state'] == 1:
+                        print("PIN", output, "HIGH")
+                        GPIO.output(output, GPIO.LOW)
             cleanDesired = {}
             cleanDesired[output] = None
             updateDesiredState(cleanDesired)
