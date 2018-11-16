@@ -193,7 +193,7 @@ def toggleAutomaticOutput(output, status):
         outputPins[output]['auto'] = 1
     else:
         outputPins[output]['auto'] = 0
-        GPIO.output(output, GPIO.LOW)
+        GPIO.output(output, GPIO.HIGH)
 
 def updateOutputsStatus(outputs):
     print("updating outputs")
