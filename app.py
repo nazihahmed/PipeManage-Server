@@ -241,7 +241,7 @@ while True:
             updateIOStatus()
             updateReportedIO()
     try:
-        time.sleep(1)
+        time.sleep(0.5)
     except KeyboardInterrupt:
         raise
     except:
