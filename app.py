@@ -199,15 +199,16 @@ def updateOutputsStatus(outputs):
     for outputStr in outputs:
         output = int(outputStr)
         print("check output",outputs[outputStr], flush=True)
-        if output in outputPins and outputs[outputStr]:
-            if outputs[outputStr]['auto'] == 0:
-                print("PIN", output, "AUTO OFF")
-                toggleAutomaticOutput(output, False)
-                # GPIO.output(output, GPIO.LOW)
-            elif outputs[outputStr]['auto'] == 1:
-                print("PIN", output, "AUTO ON")
-                toggleAutomaticOutput(output, True)
-                # GPIO.output(output, GPIO.HIGH)
+        if output in outputPins:
+            if 'auto' in outputs[outputStr]:
+                if outputs[outputStr]['auto'] == 0:
+                    print("PIN", output, "AUTO OFF")
+                    toggleAutomaticOutput(output, False)
+                    # GPIO.output(output, GPIO.LOW)
+                elif outputs[outputStr]['auto'] == 1:
+                    print("PIN", output, "AUTO ON")
+                    toggleAutomaticOutput(output, True)
+                    # GPIO.output(output, GPIO.HIGH)
             if outputPins[output]['auto'] != 1:
                 if outputs[outputStr]['state'] == 0:
                     print("PIN", output, "LOW")
