@@ -220,6 +220,7 @@ def updateOutputsStatus(outputs):
             cleanDesired[output] = None
             updateDesiredState(cleanDesired)
     updateReportedIO()
+    updateIOStatus()
 
 def initPins():
     updateReportedIO()
@@ -228,7 +229,6 @@ def initPins():
 initPins()
 
 while True:
-    updateIOStatus()
     for pin, state in outputPins.items():
         if state['auto'] == 1:
             inputPin = inputPins[getInputPin(pin)]
