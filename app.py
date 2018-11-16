@@ -193,6 +193,7 @@ def toggleAutomaticOutput(output, status):
         outputPins[output]['auto'] = 1
     else:
         outputPins[output]['auto'] = 0
+        GPIO.output(output, GPIO.LOW)
 
 def updateOutputsStatus(outputs):
     print("updating outputs")
@@ -236,10 +237,12 @@ while True:
             inputPin = inputPins[getInputPin(pin)]
             if inputPin['state'] == 0 and state['state'] == 0:
                 GPIO.output(pin, GPIO.LOW)
+                updateIOStatus()
+                updateReportedIO()
             elif inputPin['state'] == 1:
                 GPIO.output(pin, GPIO.HIGH)
-            updateIOStatus()
-            updateReportedIO()
+                updateIOStatus()
+                updateReportedIO()
     try:
         time.sleep(0.5)
     except KeyboardInterrupt:
