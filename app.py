@@ -171,7 +171,7 @@ for pin in inputPins:
 
 def getInputPin(outputPin):
     inputPin = None
-    for input, state in inputPins.tems():
+    for input, state in inputPins.items():
         if state['name'][-1:] == outputPins[outputPin]['name'][-1:]:
             inputPin = input
             break
