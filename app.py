@@ -212,10 +212,10 @@ def updateOutputsStatus(outputs):
             if outputPins[output]['auto'] != 1:
                 if outputs[outputStr]['state'] == 0:
                     print("PIN", output, "LOW")
-                    GPIO.output(output, GPIO.LOW)
+                    GPIO.output(output, GPIO.HIGH)
                 elif outputs[outputStr]['state'] == 1:
                     print("PIN", output, "HIGH")
-                    GPIO.output(output, GPIO.HIGH)
+                    GPIO.output(output, GPIO.LOW)
             cleanDesired = {}
             cleanDesired[output] = None
             updateDesiredState(cleanDesired)
