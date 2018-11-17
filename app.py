@@ -60,7 +60,7 @@ if os.stat(thingFileName).st_size == 0:
     response = client.scan(
         ExpressionAttributeValues={
             ':now': {
-                'N': str(now - 10*60*1000),
+                'N': str(now - 2*60*1000),
             },
             ':later': {
                 'N': str(now),
