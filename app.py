@@ -37,7 +37,7 @@ DEBUG = True
 # streamHandler.setFormatter(formatter)
 # logger.addHandler(streamHandler)
 
-myShadowClient = AWSIoTMQTTShadowClient(now)
+myShadowClient = AWSIoTMQTTShadowClient(str(now))
 
 # Configurations
 myShadowClient.configureEndpoint(certs['host'], 8883)
