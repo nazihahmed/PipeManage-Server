@@ -37,7 +37,7 @@ DEBUG = True
 # streamHandler.setFormatter(formatter)
 # logger.addHandler(streamHandler)
 
-
+fileDir = os.path.dirname(os.path.realpath('__file__'))
 thingFileName = os.path.join(fileDir, 'certs/thingName.txt')
 thingFile = open(thingFileName, 'w+')
 thingName = ''
@@ -57,7 +57,6 @@ if os.stat(thingFileName).st_size == 0:
         print("device registeration success waiting 30 seconds for propogation", flush=True)
         time.sleep(30)
 
-    fileDir = os.path.dirname(os.path.realpath('__file__'))
     response = client.scan(
         ExpressionAttributeValues={
             ':now': {
