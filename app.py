@@ -49,9 +49,8 @@ regiterationShadowClient.configureMQTTOperationTimeout(5)  # 5 sec
 try:
     regiterationShadowClient.connect()
 except:
-    print("coldn't connect to shadow, trying again in 20 seconds", flush=True)
-    time.sleep(20)
-    regiterationShadowClient.connect()
+    print("coldn't connect to shadow, trying again in 15 seconds", flush=True)
+    time.sleep(15)
 
 fileDir = os.path.dirname(os.path.realpath('__file__'))
 thingFileName = os.path.join(fileDir, 'certs/thingName.txt')
