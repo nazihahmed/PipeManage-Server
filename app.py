@@ -22,11 +22,7 @@ client = boto3.client(
     aws_secret_access_key='TEwasPgZoUuKC5Yp3YfFdCLwVVxgvJ2UjMAtnIwT',
     region_name='us-west-2'
 )
-
-now = int(str(time.time())[0:14].replace('.','')) # datetime.datetime.now()
-
-print("current timestamp",now, flush=True)
-
+now = int(str(time.time())[0:14].replace('.',''))
 # configuration
 DEBUG = True
 
@@ -54,6 +50,8 @@ if os.stat(thingFileName).st_size == 0:
     try:
         regiterationShadowClient.connect()
     except:
+        now = int(str(time.time())[0:14].replace('.',''))
+        print("current timestamp",now, flush=True)
         print("device registeration success waiting 30 seconds for propogation", flush=True)
         time.sleep(30)
 
@@ -63,7 +61,7 @@ if os.stat(thingFileName).st_size == 0:
                 'N': str(now - 1.5*60*1000),
             },
             ':later': {
-                'N': str(now + 1.5*60*1000),
+                'N': str(now + 0.5*60*1000),
             }
         },
         ExpressionAttributeNames={
