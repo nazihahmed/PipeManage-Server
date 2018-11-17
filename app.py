@@ -39,7 +39,7 @@ DEBUG = True
 
 fileDir = os.path.dirname(os.path.realpath('__file__'))
 thingFileName = os.path.join(fileDir, 'certs/thingName.txt')
-thingFile = open(thingFileName, 'r+')
+thingFile = open(thingFileName, 'a+')
 thingName = ''
 if os.stat(thingFileName).st_size == 0:
     response = client.scan(
