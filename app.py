@@ -102,7 +102,7 @@ myShadowClient.connect()
 def customTopicCallback(client, userdata, message):
     print("Received a delta: ", flush=True)
     # print(message.payload, flush=True)
-    data = message.payload.json()
+    data = json.loads(message.payload.decode('utf-8'))
     if "state" in data:
         updateOutputsStatus(data["state"])
     # print("from topic: ", flush=True)
