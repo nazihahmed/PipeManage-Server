@@ -37,21 +37,21 @@ DEBUG = True
 # streamHandler.setFormatter(formatter)
 # logger.addHandler(streamHandler)
 
-myShadowClient = AWSIoTMQTTShadowClient(str(now))
+regiterationShadowClient = AWSIoTMQTTShadowClient(str(now))
 
 # Configurations
-myShadowClient.configureEndpoint(certs['host'], 8883)
-myShadowClient.configureCredentials(certs['caPath'], certs['keyPath'], certs['certPath'])
-myShadowClient.configureConnectDisconnectTimeout(10)  # 10 sec
-myShadowClient.configureAutoReconnectBackoffTime(1, 32, 20)
-myShadowClient.configureMQTTOperationTimeout(5)  # 5 sec
+regiterationShadowClient.configureEndpoint(certs['host'], 8883)
+regiterationShadowClient.configureCredentials(certs['caPath'], certs['keyPath'], certs['certPath'])
+regiterationShadowClient.configureConnectDisconnectTimeout(10)  # 10 sec
+regiterationShadowClient.configureAutoReconnectBackoffTime(1, 32, 20)
+regiterationShadowClient.configureMQTTOperationTimeout(5)  # 5 sec
 
 try:
-    myShadowClient.connect()
+    regiterationShadowClient.connect()
 except:
-    print("coldn't connect to shadow, trying again in 5 seconds")
-    time.sleep(5)
-    myShadowClient.connect()
+    print("coldn't connect to shadow, trying again in 20 seconds", flush=True)
+    time.sleep(20)
+    regiterationShadowClient.connect()
 
 fileDir = os.path.dirname(os.path.realpath('__file__'))
 thingFileName = os.path.join(fileDir, 'certs/thingName.txt')
@@ -87,6 +87,17 @@ else:
 
 print("we have thingName", flush=True)
 print(thingName, flush=True)
+
+myShadowClient = AWSIoTMQTTShadowClient(thingName)
+
+# Configurations
+myShadowClient.configureEndpoint(certs['host'], 8883)
+myShadowClient.configureCredentials(certs['caPath'], certs['keyPath'], certs['certPath'])
+myShadowClient.configureConnectDisconnectTimeout(10)  # 10 sec
+myShadowClient.configureAutoReconnectBackoffTime(1, 32, 20)
+myShadowClient.configureMQTTOperationTimeout(5)  # 5 sec
+
+myShadowClient.connect()
 
 
 def customTopicCallback(client, userdata, message):
