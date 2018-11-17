@@ -61,8 +61,9 @@ if os.stat(thingFileName).st_size == 0:
     sortedResponse = response['Items']
     sortedResponse.sort(key=lambda x:int(x['timestamp']['N']))
     # get latest item
-    thing = sortedResponse[-1];
-    thingName = thing['thingName']['S'];
+    print(sortedResponse, flush=True)
+    thing = sortedResponse[-1]
+    thingName = thing['thingName']['S']
     thingFile.write(thingName)
     thingFile.close()
 else:
