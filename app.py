@@ -37,26 +37,27 @@ DEBUG = True
 # streamHandler.setFormatter(formatter)
 # logger.addHandler(streamHandler)
 
-regiterationShadowClient = AWSIoTMQTTShadowClient(str(now))
 
-# Configurations
-regiterationShadowClient.configureEndpoint(certs['host'], 8883)
-regiterationShadowClient.configureCredentials(certs['caPath'], certs['keyPath'], certs['certPath'])
-regiterationShadowClient.configureConnectDisconnectTimeout(10)  # 10 sec
-regiterationShadowClient.configureAutoReconnectBackoffTime(1, 32, 20)
-regiterationShadowClient.configureMQTTOperationTimeout(5)  # 5 sec
-
-try:
-    regiterationShadowClient.connect()
-except:
-    print("coldn't connect to shadow, trying again in 15 seconds", flush=True)
-    time.sleep(15)
-
-fileDir = os.path.dirname(os.path.realpath('__file__'))
 thingFileName = os.path.join(fileDir, 'certs/thingName.txt')
 thingFile = open(thingFileName, 'w+')
 thingName = ''
 if os.stat(thingFileName).st_size == 0:
+    regiterationShadowClient = AWSIoTMQTTShadowClient(str(now))
+
+    # Configurations
+    regiterationShadowClient.configureEndpoint(certs['host'], 8883)
+    regiterationShadowClient.configureCredentials(certs['caPath'], certs['keyPath'], certs['certPath'])
+    regiterationShadowClient.configureConnectDisconnectTimeout(10)  # 10 sec
+    regiterationShadowClient.configureAutoReconnectBackoffTime(1, 32, 20)
+    regiterationShadowClient.configureMQTTOperationTimeout(5)  # 5 sec
+
+    try:
+        regiterationShadowClient.connect()
+    except:
+        print("device registeration success waiting 30 seconds for propogation", flush=True)
+        time.sleep(30)
+
+    fileDir = os.path.dirname(os.path.realpath('__file__'))
     response = client.scan(
         ExpressionAttributeValues={
             ':now': {
