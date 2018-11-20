@@ -38,6 +38,7 @@ thingFileName = os.path.join(fileDir, 'certs/thingName.txt')
 thingFile = open(thingFileName, 'r+')
 thingName = ''
 if os.stat(thingFileName).st_size == 0:
+    print("file size is 0")
     regiterationShadowClient = AWSIoTMQTTShadowClient(str(now))
 
     # Configurations
@@ -85,7 +86,7 @@ else:
 print("we have thingName", flush=True)
 print(thingName, flush=True)
 
-myShadowClient = AWSIoTMQTTShadowClient(str(now))
+myShadowClient = AWSIoTMQTTShadowClient(thingName)
 
 # Configurations
 myShadowClient.configureEndpoint(certs['host'], 8883)
