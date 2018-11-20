@@ -1,7 +1,7 @@
 from flask import Flask, render_template, jsonify, request
 # import eventlet
 import time
-import RPi.GPIO as GPIO
+# import RPi.GPIO as GPIO
 import boto3
 import os
 import json

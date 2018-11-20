@@ -2,7 +2,7 @@ AWSIoTPythonSDK==1.4.0
 Flask==1.0.2
 Jinja2==2.10
 MarkupSafe==1.0
-RPi.GPIO==0.6.3
+#RPi.GPIO==0.6.3
 Werkzeug==0.14.1
 beeprint==2.4.7
 boto3==1.9.4
