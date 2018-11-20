@@ -2,4 +2,3 @@ venv/*
 node_modules/*
 *.log
 dist/*
-certs/*
