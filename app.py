@@ -94,7 +94,7 @@ myShadowClient.configureConnectDisconnectTimeout(10)  # 10 sec
 myShadowClient.configureAutoReconnectBackoffTime(1, 32, 20)
 myShadowClient.configureMQTTOperationTimeout(5)  # 5 sec
 
-myShadowClient.connect(thingName)
+myShadowClient.connect()
 
 
 def customTopicCallback(client, userdata, message):
