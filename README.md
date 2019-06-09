@@ -1,4 +1,4 @@
-# Intel Pipe-manage project
+# Pipe-manage project
 
 ## Requirements
   - [Python 3.7.0](https://www.python.org/downloads/release/python-370/)
