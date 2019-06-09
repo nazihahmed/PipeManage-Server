@@ -1,5 +1,9 @@
 # PipeManage Server
 
+## Related
+  - [PipeManageOS](https://github.com/nazihahmed/intel-pipeos)
+  - [PipeManage UI](https://github.com/nazihahmed/intel-pipeos)
+
 ## Requirements
   - [Python 3.7.0](https://www.python.org/downloads/release/python-370/)
 
